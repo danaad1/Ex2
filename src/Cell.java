@@ -7,24 +7,38 @@ public class Cell {
      * @param num
      * @return
      */
-    public boolean isNumber (String num){
+    public static boolean isNumber(String num){
         boolean ans = true;
-        for (int i = 1 ; i < num.length(); i++){}
-            {if (num.charAt(i) == '-'){
+        String regex = "^\\d+$";
+        for (int i = 1 ; i < num.length(); i++) {
+            if (num.charAt(i) == '-') {
                 ans = false;
             }
         }
+        if (!num.matches(regex)) {
+            ans = false;
+        }
+
 
         return ans;
     }
     public boolean isText (String num){
         boolean ans = true;
+        
 
         return ans;
     }
 
     public boolean isForm (String num) {
         boolean ans = true;
+        if (num.charAt(0) != '='){
+            ans = false;
+        }
+        else {
+
+        }
+
+
 
         return ans;
     }
@@ -35,4 +49,6 @@ public class Cell {
         return ans;
 
     }
+
+
 }
