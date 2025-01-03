@@ -9,17 +9,13 @@ public class Cell {
      */
     public static boolean isNumber(String num){
         boolean ans = true;
-        String regex = "^\\d+$";
-        for (int i = 1 ; i < num.length(); i++) {
-            if (num.charAt(i) == '-') {
-                ans = false;
-            }
+        try {
+            Double.parseDouble(num);
+            double forMe = Double.parseDouble(num); // just checking
         }
-        if (!num.matches(regex)) {
+        catch (NumberFormatException e) {
             ans = false;
         }
-
-
         return ans;
     }
     public boolean isText (String num){
