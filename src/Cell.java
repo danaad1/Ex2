@@ -68,8 +68,8 @@ public class Cell {
         }
         if (isCell(num)){ // if num is a cell
             return true;
-        }
-        if ( valForm(num.substring(0 , mainOp(num)-1)) && valForm(num.substring(mainOp(num)+1))){
+        } // remove unnecessary parentheses//////////////////////////////////////////////////////////////////
+        if ( valForm(num.substring(0 , mainOp(num)-1)) && valForm(num.substring(mainOp(num)+1))){ //both sides of op index are forms
             return true;
         }
         return false;
@@ -83,16 +83,16 @@ public class Cell {
 
         for (int i = 0; i < num.length(); i++){
             if (num.charAt(i) == '*' || num.charAt(i) == '/'){
-                counter += 0.5;
-                if (counter <= minCount){
-                    maimIndex = i;
+                counter += 0.5; // value of *\/
+                if (counter <= minCount){ // if value of arithmetic is the smallest - last to be calc'
+                    maimIndex = i; // save index of minimal value arithmetic
                     minCount = counter;
                 }
             }
             if (num.charAt(i) == '-' || num.charAt(i) == '+'){
-                counter += 0.25;
-                if (counter <= minCount){
-                    maimIndex = i;
+                counter += 0.25; // value of +\-
+                if (counter <= minCount){ // if value of arithmetic is the smallest - last to be calc'
+                    maimIndex = i; // save index of minimal value arithmetic
                     minCount = counter;
                 }
             }
@@ -106,17 +106,17 @@ public class Cell {
     public boolean parentheses (String num){
         int count = 0 ;
         for (int i = 0; i < num.length(); i++){
-            if (num.charAt(i) == '('){
+            if (num.charAt(i) == '('){ // count amount of '('
                 count++;
             }
-            if (num.charAt(i) == ')'){
+            if (num.charAt(i) == ')'){ // count amount of ')'
                 count--;
             }
-            if (count <0){
+            if (count <0){ //if there are more ')' than there are '(' - invalid
                 return false;
             }
         } //end of for
-        if (count != 0 ){
+        if (count != 0 ){ // if '(' and ')' amounts aren't equal
             return false;
         }
         return true;
