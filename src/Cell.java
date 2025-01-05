@@ -71,17 +71,37 @@ public class Cell {
         }
 
 
+
         return false;
-
-
-
 //        return ans;
     }
 
-//    public int mainOP (String num){
+    public int mainOP (String num){
+        double counter = 0 ;
+        int maimIndex = -1;
+        double minCount = 0 ;
 
-//
-//    }
+        for (int i = 0; i < num.length(); i++){
+            if (num.charAt(i) == '*' || num.charAt(i) == '/'){
+                counter += 0.5;
+                if (counter <= minCount){
+                    maimIndex = i;
+                    minCount = counter;
+                }
+            }
+            if (num.charAt(i) == '-' || num.charAt(i) == '+'){
+                counter += 0.25;
+                if (counter <= minCount){
+                    maimIndex = i;
+                    minCount = counter;
+                }
+            }
+            if (num.charAt(i) == ')'){
+                counter = 0;
+            }
+        }
+        return maimIndex;
+    }
 
     public boolean parentheses (String num){
         int count = 0 ;
@@ -92,7 +112,10 @@ public class Cell {
             if (num.charAt(i) == ')'){
                 count--;
             }
-        }
+            if (count <0){
+                return false;
+            }
+        } //end of for
         if (count != 0 ){
             return false;
         }
