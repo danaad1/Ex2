@@ -76,7 +76,7 @@ public class Cell {
 //        return ans;
     }
 
-    public int mainOP (String num){
+    public int mainOp (String num){
         double counter = 0 ;
         int maimIndex = -1;
         double minCount = 0 ;
