@@ -69,14 +69,14 @@ public class Cell {
         if (isCell(num)){ // if num is a cell
             return true;
         }
-
-
-
+        if ( valForm(num.substring(0 , mainOp(num)-1)) && valForm(num.substring(mainOp(num)+1))){
+            return true;
+        }
         return false;
 //        return ans;
     }
 
-    public int mainOp (String num){
+    public static int mainOp (String num){
         double counter = 0 ;
         int maimIndex = -1;
         double minCount = 0 ;
