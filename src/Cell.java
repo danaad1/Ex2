@@ -40,16 +40,16 @@ public class Cell {
      */
     public static boolean isForm(String num) {
         boolean ans = true;
-        String a = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ()+-*/"; //change, don't want it this way
-
         if (num.charAt(0) != '='){
             ans = false;
         }
         else {
+            num = num.substring(1);
+            if (!valForm(num)){
+                ans = false;
+            }
 
         }
-
-
 
         return ans;
     }
@@ -61,37 +61,55 @@ public class Cell {
 
     }
 
+    public static boolean valForm(String num){
+//        boolean ans = true;
+        if (isNumber(num)){ // if num is a number
+            return true;
+        }
+        if (isCell(num)){ // if num is a cell
+            return true;
+        }
+
+
+        return false;
+
+
+
+//        return ans;
+    }
+
+//    public int mainOP (String num){
+
+//
+//    }
+
+    public boolean parentheses (String num){
+        int count = 0 ;
+        for (int i = 0; i < num.length(); i++){
+            if (num.charAt(i) == '('){
+                count++;
+            }
+            if (num.charAt(i) == ')'){
+                count--;
+            }
+        }
+        if (count != 0 ){
+            return false;
+        }
+        return true;
+    }
+
+
     /**
      * this private function checks if a given string is a valid cell [A-Z][0-99]
      * @param a
      * @return
      */
-    private boolean isCell(String a){
+    public static boolean isCell(String a){
         boolean ans = true;
         String regex = "^[A-Z][0-99]";
         if (!a.matches(regex)) {
             ans = false;
-        }
-        return ans;
-    }
-
-    /**
-     *
-     * @param num
-     * @return
-     */
-    private boolean valOpForm (String num) {
-        boolean ans = true;
-        String valOp = "()+-*/"; // = 325+789(6)*515gbry_+
-        int index = 1;
-        for (int i = 0; i < num.length(); i++) {
-            if (valOp.contains(String.valueOf(num.charAt(i)))) {
-                String subStr = num.substring(index,i);
-                if (!isNumber(subStr)) {
-                    ans = false;
-                }
-                index = i;
-            }
         }
         return ans;
     }
