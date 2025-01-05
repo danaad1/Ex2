@@ -24,9 +24,11 @@ public class Cell {
      * @param num
      * @return true when num is a text
      */
-    public boolean isText (String num){
+    public static boolean isText(String num){
         boolean ans = true;
-        
+        if (num.charAt(0) == '=' || isNumber(num) || isForm(num)) { //if num is either formula or just a number
+            ans = false;
+        }
 
         return ans;
     }
@@ -36,7 +38,7 @@ public class Cell {
      * @param num
      * @return true when num is a valid formula
      */
-    public boolean isForm (String num) {
+    public static boolean isForm(String num) {
         boolean ans = true;
         String a = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ()+-*/"; //change, don't want it this way
 
@@ -80,6 +82,17 @@ public class Cell {
      */
     private boolean valOpForm (String num) {
         boolean ans = true;
+        String valOp = "()+-*/"; // = 325+789(6)*515gbry_+
+        int index = 1;
+        for (int i = 0; i < num.length(); i++) {
+            if (valOp.contains(String.valueOf(num.charAt(i)))) {
+                String subStr = num.substring(index,i);
+                if (!isNumber(subStr)) {
+                    ans = false;
+                }
+                index = i;
+            }
+        }
         return ans;
     }
 
