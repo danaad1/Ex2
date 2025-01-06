@@ -69,14 +69,14 @@ public class Cell {
         if (isCell(num)){ // if num is a cell
             return true;
         } // remove unnecessary parentheses//////////////////////////////////////////////////////////////////
-        if ( valForm(num.substring(0 , mainOp(num)-1)) && valForm(num.substring(mainOp(num)+1))){ //both sides of op index are forms
+        if ( valForm(num.substring(0 , mainOpIndex(num)-1)) && valForm(num.substring(mainOpIndex(num)+1))){ //both sides of op index are forms
             return true;
         }
         return false;
 //        return ans;
     }
 
-    public static int mainOp (String num){
+    public static int mainOpIndex (String num){
         double counter = 0 ;
         int maimIndex = -1;
         double minCount = 0 ;
@@ -103,7 +103,12 @@ public class Cell {
         return maimIndex;
     }
 
-    public boolean parentheses (String num){
+    /**
+     * this function checks if a string contains parentheses in the right format (for every opening parentheses there is a correlating closing one)
+     * @param num the given string
+     * @return true when parentheses are valid
+     */
+    public static boolean parentheses(String num){
         int count = 0 ;
         for (int i = 0; i < num.length(); i++){
             if (num.charAt(i) == '('){ // count amount of '('
