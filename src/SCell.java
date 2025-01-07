@@ -7,7 +7,6 @@ public class SCell implements Cell {
 
     public SCell(String s) {
         // Add your code here
-        line = s;
         setData(s);
     }
 
@@ -23,7 +22,6 @@ public class SCell implements Cell {
     //@Override
     @Override
     public String toString() {
-
         return getData();
     }
 
@@ -32,6 +30,15 @@ public class SCell implements Cell {
         // Add your code here
         line = s;
         /////////////////////
+        if (isNumber(s)){
+            setType(Ex2Utils.NUMBER);
+        }
+        if(isForm(s)){
+            setType(Ex2Utils.FORM);
+        }
+        if(isText(s)){
+            setType(Ex2Utils.TEXT);
+        }
     }
     @Override
     public String getData() {

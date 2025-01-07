@@ -6,14 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class SCellTest {
 
     @Test
-    void testToString() {
-    }
-
-    @Test
-    void isCell() {
-    }
-
-    @Test
     void isNumber() {
         String[] good = { "-35.32", "123", "21.03" , "0.002" , "2.6", "8.0" , "1.000" , "-9" , "-4" };
         for (int i = 0; i < good.length; i++) {
@@ -46,6 +38,7 @@ class SCellTest {
     @Test
     void isForm() {
 
+
     }
 
     @Test
@@ -74,6 +67,8 @@ class SCellTest {
         assertTrue(SCell.mainOpIndex(g) == 11);
         String h = "(2+(3-(4+(5-6))+6)+7)"; //18
         assertTrue(SCell.mainOpIndex(h) == 18);
+        String k = "(2+5)+(3+5)*3";
+        assertTrue(SCell.mainOpIndex(k) == 5);
     }
 
     @Test
