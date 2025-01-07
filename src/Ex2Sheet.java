@@ -2,7 +2,7 @@ import java.io.IOException;
 // Add your documentation below:
 
 public class Ex2Sheet implements Sheet {
-    private Cell[][] table;
+    private SCell[][] table;
     // Add your code here
 
     // ///////////////////
@@ -24,12 +24,12 @@ public class Ex2Sheet implements Sheet {
     @Override
     public String value(int x, int y) {
         String ans = Ex2Utils.EMPTY_CELL;
-        Cell a = table[x][y];
+        SCell a = table[x][y];
 //        int cellType = a.getType();
 
         // Add your code here
 
-        Cell c = get(x, y);
+        SCell c = get(x, y);
         if (c != null) {
             if (c.getType() == 3) {
                 ans = eval(x, y);
@@ -55,14 +55,14 @@ public class Ex2Sheet implements Sheet {
     }
 
     @Override
-    public Cell get(int x, int y) {
+    public SCell get(int x, int y) {
 
         return table[x][y];
     }
 
     @Override
-    public Cell get(String cords) {
-        Cell ans = null;
+    public SCell get(String cords) {
+        SCell ans = null;
         // Add your code here
 
         /////////////////////
@@ -99,16 +99,17 @@ public class Ex2Sheet implements Sheet {
 
     @Override
     public void set(int x, int y, String s) {
-        Cell c = new SCell(s);
+        if (isIn(x, y)){
+        SCell c = new SCell(s);
         table[x][y] = c;
+        }
 
         // Add your code here
 
         /////////////////////
 
-        String xCord = String.valueOf(x); // A-z
-        String yCord = String.valueOf(y);
-
+//        String xCord = String.valueOf(x); // A-z
+//        String yCord = String.valueOf(y);
 
     }
 
@@ -156,10 +157,14 @@ public class Ex2Sheet implements Sheet {
     }
 
     public boolean canBeComputedNow (int x, int y) {
-        boolean ans = true;
-//        Cell a = get(x, y);
+        boolean ans = false;
+        SCell a = get(x, y);
 //        String x = a.setData();
-//        if (x.contains())
+        if (a.getType() == 3 && containsValCellName(a)) {
+            ans = false;
+        }
+
+
 
         return ans;
     }
@@ -181,24 +186,30 @@ public class Ex2Sheet implements Sheet {
     @Override
     public String eval(int x, int y) {
         String ans = null;
+        Cell c = get(x, y);
         if (get(x, y) != null) {
-            ans = get(x, y).toString();
+            ans = c/*get(x, y)*/.toString();
         }
         // Add your code here
 
         /////////////////////
 
+        if(c.getType() == 3) {
+
+
+        }
+
         return ans;
     }
 
-    public static boolean isCell(String a) {
-        boolean ans = true;
-        String regex = "^[A-Za-z][0-99]"; // צריך להיות הצמד לסוף
-        if (!a.matches(regex)) {
-            ans = false;
-        }
-        return ans;
-    }
+//    public static boolean isCell(String a) {
+//        boolean ans = true;
+//        String regex = "^[A-Za-z][0-99]"; // צריך להיות הצמד לסוף
+//        if (!a.matches(regex)) {
+//            ans = false;
+//        }
+//        return ans;
+//    }
 
     public String cellVal(String s) {
         String ans = null;
@@ -206,7 +217,7 @@ public class Ex2Sheet implements Sheet {
         String lowerLetters = letters.toLowerCase();
         String x = null;
         String y = null;
-        if (isCell(s)) {
+        if (SCell.isCell(s)) {
             x = s.substring(1); // only the number of the cell
             if (letters.contains(String.valueOf(s.charAt(0)))) { // if letter is upper case
                 y = String.valueOf(letters.indexOf(s.charAt(0))); //the string value of the cell letter
@@ -235,7 +246,7 @@ public class Ex2Sheet implements Sheet {
         for (int i = 0; i < checkForCell.length(); i++) {
             for (int j = i + 2; j <= checkForCell.length(); j++) {
                 String substring = checkForCell.substring(i, j);
-                if (isCell(substring)) {
+                if (SCell.isCell(substring)) {
                     found = true;
 
                 }
