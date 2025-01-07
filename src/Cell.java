@@ -1,145 +1,41 @@
-
-public class Cell {
-
+/**
+ * ArielU. Intro2CS, Ex2: https://docs.google.com/document/d/1-18T-dj00apE4k1qmpXGOaqttxLn-Kwi/edit?usp=sharing&ouid=113711744349547563645&rtpof=true&sd=true
+ * DO NOT CHANGE THIS INTERFACE!!
+ * This interface represents a spreadsheet entry for Ex2:
+ * Each spreadsheet entry (aka a Cell) which can be:
+ * a number (Double), a String (Text), or a form, the data of each cell is represented as a String (e.g., "abc", "4.2", "=2+3*2", "=A1*(3-A2)".
+ */
+public interface Cell {
     /**
-     * this function checks if a given string is a number
-     *
-     * @param num
+     * Return the input text (aka String) this cell was init by (without any computation).
      * @return
      */
-    public static boolean isNumber(String num){
-        boolean ans = true;
-        try {
-            Double.parseDouble(num); //try casting to double
-            double forMe = Double.parseDouble(num); // just checking
-        }
-        catch (NumberFormatException e) {
-            ans = false; // if casting fails num isn't a valid number
-        }
-        return ans;
-    }
+    String getData();
 
-    /**
-     * this function checks is a given string is in the form of a text
-     * @param num
-     * @return true when num is a text
-     */
-    public static boolean isText(String num){
-        boolean ans = true;
-        if (num.charAt(0) == '=' || isNumber(num) || isForm(num)) { //if num is either formula or just a number
-            ans = false;
-        }
-
-        return ans;
-    }
-
-    /**
-     * this function checks if a given string is in the form of a formula
-     * @param num
-     * @return true when num is a valid formula
-     */
-    public static boolean isForm(String num) {
-        boolean ans = true;
-        if (num.charAt(0) != '='){
-            ans = false;
-        }
-        else {
-            num = num.substring(1);
-            if (!valForm(num)){
-                ans = false;
-            }
-
-        }
-
-        return ans;
-    }
-
-    double computeForm (String num) {
-        double ans = 0;
-
-        return ans;
-
-    }
-
-    public static boolean valForm(String num){
-//        boolean ans = true;
-        if (isNumber(num)){ // if num is a number
-            return true;
-        }
-        if (isCell(num)){ // if num is a cell
-            return true;
-        } // remove unnecessary parentheses//////////////////////////////////////////////////////////////////
-        if ( valForm(num.substring(0 , mainOpIndex(num)-1)) && valForm(num.substring(mainOpIndex(num)+1))){ //both sides of op index are forms
-            return true;
-        }
-        return false;
-//        return ans;
-    }
-
-    public static int mainOpIndex (String num){
-        double counter = 0 ;
-        int maimIndex = -1;
-        double minCount = 0 ;
-
-        for (int i = 0; i < num.length(); i++){
-            if (num.charAt(i) == '*' || num.charAt(i) == '/'){
-                counter += 0.5; // value of *\/
-                if (counter <= minCount){ // if value of arithmetic is the smallest - last to be calc'
-                    maimIndex = i; // save index of minimal value arithmetic
-                    minCount = counter;
-                }
-            }
-            if (num.charAt(i) == '-' || num.charAt(i) == '+'){
-                counter += 0.25; // value of +\-
-                if (counter <= minCount){ // if value of arithmetic is the smallest - last to be calc'
-                    maimIndex = i; // save index of minimal value arithmetic
-                    minCount = counter;
-                }
-            }
-            if (num.charAt(i) == ')'){
-                counter = 0;
-            }
-        }
-        return maimIndex;
-    }
-
-    /**
-     * this function checks if a string contains parentheses in the right format (for every opening parentheses there is a correlating closing one)
-     * @param num the given string
-     * @return true when parentheses are valid
-     */
-    public static boolean parentheses(String num){
-        int count = 0 ;
-        for (int i = 0; i < num.length(); i++){
-            if (num.charAt(i) == '('){ // count amount of '('
-                count++;
-            }
-            if (num.charAt(i) == ')'){ // count amount of ')'
-                count--;
-            }
-            if (count <0){ //if there are more ')' than there are '(' - invalid
-                return false;
-            }
-        } //end of for
-        if (count != 0 ){ // if '(' and ')' amounts aren't equal
-            return false;
-        }
-        return true;
-    }
+/** Changes the underline string of this cell
+ *  */
+    void setData(String s);
 
 
     /**
-     * this private function checks if a given string is a valid cell [A-Z][0-99]
-     * @param a
-     * @return
+     * Returns the type of this cell {TEXT,NUMBER, FORM, ERR_CYCLE_FORM, ERR_WRONG_FORM}
+     * @return an int value (as defined in Ex2Utils)
      */
-    public static boolean isCell(String a){
-        boolean ans = true;
-        String regex = "^[A-Z][0-99]";
-        if (!a.matches(regex)) {
-            ans = false;
-        }
-        return ans;
-    }
+    public int getType();
 
+    /**
+     * Changes the type of this Cell {TEXT,NUMBER, FORM, ERR_CYCLE_FORM, ERR_WRONG_FORM}
+     * @param t an int type value as defines in Ex2Utils.
+     */
+    public void setType(int t);
+    /**
+     * Computes the natural order of this entry (cell) in case of a number or a String =0, else 1+ the max of all dependent cells.
+     * @return an integer representing the "number of rounds" needed to compute this cell (using an iterative approach)..
+     */
+    public int getOrder();
+    /**
+     * Changes the order of this Cell
+     * @param t
+     */
+    public void setOrder(int t);
 }
