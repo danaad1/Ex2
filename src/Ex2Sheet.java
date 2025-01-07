@@ -122,7 +122,8 @@ public class Ex2Sheet implements Sheet {
 
     @Override
     public boolean isIn(int xx, int yy) {
-        boolean ans = xx >= 0 && yy >= 0;
+        boolean ans = xx >= 0 && xx < 26 && yy >= 0 && yy < 100;
+
         // Add your code here
 
         /////////////////////
@@ -132,9 +133,34 @@ public class Ex2Sheet implements Sheet {
     @Override
     public int[][] depth() {
         int[][] ans = new int[width()][height()];
-        // Add your code here
+        defultDepth(ans);
+        int depth = 0;
+        int count = 0;
+        int max = width()*height();
+        boolean computable = true;
 
-        // ///////////////////
+        while (count < max && computable) {
+            computable = false;
+            for (int i = 0; i < width(); i++) {
+                for (int j = 0; j < height(); j++) {
+                    if(canBeComputedNow(i,j)) { // if
+                        ans [i][j] = depth;
+                        count ++;
+                        computable = true;
+                    }
+                }
+                depth ++;
+            } // end for
+        } //end while
+        return ans;
+    }
+
+    public boolean canBeComputedNow (int x, int y) {
+        boolean ans = true;
+//        Cell a = get(x, y);
+//        String x = a.setData();
+//        if (x.contains())
+
         return ans;
     }
 
@@ -190,6 +216,35 @@ public class Ex2Sheet implements Sheet {
 
             ans = y + x;
         }
+        return ans;
+    }
+
+    public void defultDepth(int[][] a) {
+//        int[][] ans = new int[width()][height()];
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[i].length; j++) {
+               a[i][j] = -1;
+            }
+        }
+    }
+
+    public boolean containsValCellName(Cell c) {
+        boolean ans = false;
+        boolean found = false;
+        String checkForCell  = c.toString();
+        for (int i = 0; i < checkForCell.length(); i++) {
+            for (int j = i + 2; j <= checkForCell.length(); j++) {
+                String substring = checkForCell.substring(i, j);
+                if (isCell(substring)) {
+                    found = true;
+
+                }
+            }
+            if (found) {
+                break;
+            }
+        }
+
         return ans;
     }
 
