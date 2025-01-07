@@ -42,7 +42,7 @@ public class Ex2Sheet implements Sheet {
 
         Cell c = get(x,y);
         if(c!=null) {
-            ans = c.toString();
+            ans = c.toString(); // סימן שאלה אחד גדוללללללללללללללל
         }
 
         /////////////////////
@@ -61,15 +61,19 @@ public class Ex2Sheet implements Sheet {
         // Add your code here
 
         /////////////////////
-         String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String xCord = ""; // x coordinates
-        String yCord = ""; // y coordinates
+//        String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String cell = cellVal(cords);
+        String xCord = String.valueOf(cell.charAt(0)); // x coordinates
+        String yCord = cell.substring(1); // y coordinates
         String cell = "[" + xCord + "]" + "[" + yCord + "]" ;  // the string form of the cell
-        if (isCell(cords)){
-            xCord = String.valueOf(letters.indexOf(cords.charAt(0))); //the string value of the cell letter
-            yCord = cords.substring(1); // only the number of the cell
-            ans.setData(cell); // change cell and accordingly
-        }
+
+
+//        if (isCell(cords)){
+//            xCord = String.valueOf(letters.indexOf(cords.charAt(0))); //the string value of the cell letter
+//            yCord = cords.substring(1); // only the number of the cell
+//            ans.setData(cell); // change cell and accordingly
+//        }
+
         if (isIn(Integer.parseInt(xCord), Integer.parseInt(yCord))) {
             ans = null;
         }
@@ -89,9 +93,13 @@ public class Ex2Sheet implements Sheet {
     public void set(int x, int y, String s) {
         Cell c = new SCell(s);
         table[x][y] = c;
+
         // Add your code here
 
         /////////////////////
+
+
+
     }
     @Override
     public void eval() {
@@ -136,7 +144,9 @@ public class Ex2Sheet implements Sheet {
     @Override
     public String eval(int x, int y) {
         String ans = null;
-        if(get(x,y)!=null) {ans = get(x,y).toString();}
+        if(get(x,y)!=null) {
+            ans = get(x,y).toString();
+        }
         // Add your code here
 
         /////////////////////
@@ -152,4 +162,16 @@ public class Ex2Sheet implements Sheet {
         }
         return ans;
     }
+
+    public String cellVal(String s){
+        String ans = null;
+        String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        if (isCell(s)) {
+            String x = s.substring(1); // only the number of the cell
+            String y = String.valueOf(letters.indexOf(s.charAt(0))); //the string value of the cell letter
+            ans = y + x ;
+        }
+        return ans;
+    }
+
 }
