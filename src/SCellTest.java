@@ -45,6 +45,7 @@ class SCellTest {
 
     @Test
     void isForm() {
+
     }
 
     @Test
@@ -88,5 +89,20 @@ class SCellTest {
         for (int i = 0; i < bad.length; i++) {
             boolean a = SCell.parentheses(bad[i]);
         }
+    }
+
+    @Test
+    void removeParen() {
+        String a = "(2+5)";
+        String b = SCell.removeParen(a);
+        assertTrue(b.equals("2+5"));
+        String c = "(1+2*(3-8)+2)";
+        String d = SCell.removeParen(c);
+        assertTrue(d.equals("1+2*(3-8)+2"));
+        String e = "(2+5)*3";
+        String f = SCell.removeParen(e);
+        assertTrue(f.equals("(2+5)*3"));
+
+
     }
 }

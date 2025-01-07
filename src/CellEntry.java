@@ -17,5 +17,6 @@ public class CellEntry  implements Index2D {
     public int getY() {
         return Ex2Utils.ERR;
     }
+
 }
  //to string //

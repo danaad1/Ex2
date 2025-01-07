@@ -23,6 +23,7 @@ public class SCell implements Cell {
     //@Override
     @Override
     public String toString() {
+
         return getData();
     }
 
@@ -102,17 +103,15 @@ public class SCell implements Cell {
      */
     public static boolean isForm(String num) {
         boolean ans = true;
-        if (num.charAt(0) != '='){
+        if (num.charAt(0) != '='){ // if the first index isn't '=' - not formula
             ans = false;
         }
         else {
             num = num.substring(1);
-            if (!valForm(num)){
+            if (num.isEmpty() || !valForm(num)){ // if there's only = in num and the rest isn't a valid formula
                 ans = false;
             }
-
         }
-
         return ans;
     }
 
@@ -130,7 +129,13 @@ public class SCell implements Cell {
         }
         if (isCell(num)){ // if num is a cell
             return true;
-        } // remove unnecessary parentheses//////////////////////////////////////////////////////////////////
+        }
+        if (parentheses(num)){
+            removeParen(num); // remove unnecessary parentheses
+            if ( valForm(num.substring(0 , mainOpIndex(num)-1)) && valForm(num.substring(mainOpIndex(num)+1))){ //both sides of op index are forms
+                return true;
+            }
+        }
         if ( valForm(num.substring(0 , mainOpIndex(num)-1)) && valForm(num.substring(mainOpIndex(num)+1))){ //both sides of op index are forms
             return true;
         }
@@ -173,7 +178,7 @@ public class SCell implements Cell {
      * @param num the given string
      * @return true when parentheses are valid
      */
-    public static boolean parentheses(String num){
+    public static boolean parentheses (String num){
         int count = 0 ;
         for (int i = 0; i < num.length(); i++){
             if (num.charAt(i) == '('){ // count amount of '('
@@ -192,8 +197,34 @@ public class SCell implements Cell {
         return true;
     }
 
-
-
-
+    public static String removeParen (String num){
+        String ans = num;
+        int count = -1;
+        if (num.charAt(0) == '('){// if the first index is an open parentheses
+            count = 1;
+            num = num.substring(1);
+            int index = 0; // the index of the closing parentheses
+            for (int i = 0; i < num.length(); i++) { //check if the correlating parentheses for the first index is the last
+                String a = num.charAt(i) + "";
+                switch (a) {
+                    case "(":
+                        count++;
+                        break;
+                    case ")":
+                        count--;
+                        break;
+                }
+                if (count == 0) {
+                    index = i;
+                    break;
+                }
+            }
+            int w = num.length();
+            if (index == num.length() - 1) {
+                ans = num.substring(0, index);
+            }
+        }
+        return ans;
+    }
 
 }
