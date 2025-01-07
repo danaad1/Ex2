@@ -16,16 +16,34 @@ public class Ex2Sheet implements Sheet {
         eval();
     }
     public Ex2Sheet() {
+
         this(Ex2Utils.WIDTH, Ex2Utils.HEIGHT);
     }
 
     @Override
     public String value(int x, int y) {
         String ans = Ex2Utils.EMPTY_CELL;
+        Cell a = table[x][y];
+        int cellType = a.getType();
+//        TEXT=1, NUMBER=2, FORM=3, ERR_FORM_FORMAT=-2, ERR_CYCLE_FORM=-1, ERR=-1
+
+        switch(cellType) {
+            case  1: // text
+                ans = a.getData().toString(); // צריך טוסטרינג?
+            case 2: // number
+                ans = a.getData().toString(); // צריך טוסטרינג?
+            case 3: //form
+                ans = eval(x, y);
+            case -2: //ERR_FORM_FORMAT
+            case -1:  //ERR_CYCLE_FORM
+        }
+
         // Add your code here
 
         Cell c = get(x,y);
-        if(c!=null) {ans = c.toString();}
+        if(c!=null) {
+            ans = c.toString();
+        }
 
         /////////////////////
         return ans;
@@ -33,6 +51,7 @@ public class Ex2Sheet implements Sheet {
 
     @Override
     public Cell get(int x, int y) {
+
         return table[x][y];
     }
 
@@ -42,6 +61,19 @@ public class Ex2Sheet implements Sheet {
         // Add your code here
 
         /////////////////////
+         String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String xCord = ""; // x coordinates
+        String yCord = ""; // y coordinates
+        String cell = "[" + xCord + "]" + "[" + yCord + "]" ;  // the string form of the cell
+        if (isCell(cords)){
+            xCord = String.valueOf(letters.indexOf(cords.charAt(0))); //the string value of the cell letter
+            yCord = cords.substring(1); // only the number of the cell
+            ans.setData(cell); // change cell and accordingly
+        }
+        if (isIn(Integer.parseInt(xCord), Integer.parseInt(yCord))) {
+            ans = null;
+        }
+
         return ans;
     }
 
@@ -108,6 +140,16 @@ public class Ex2Sheet implements Sheet {
         // Add your code here
 
         /////////////////////
+
         return ans;
+    }
+
+    public static boolean isCell(String a){
+        boolean ans = true;
+        String regex = "^[A-Z][0-99]";
+        if (!a.matches(regex)) {
+            ans = false;
         }
+        return ans;
+    }
 }
