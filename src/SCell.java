@@ -22,6 +22,7 @@ public class SCell implements Cell {
     //@Override
     @Override
     public String toString() {
+
         return getData();
     }
 
@@ -204,6 +205,11 @@ public class SCell implements Cell {
         return true;
     }
 
+    /**
+     * this function
+     * @param num
+     * @return
+     */
     public static String removeParen (String num){
         String ans = num;
         int count = -1;

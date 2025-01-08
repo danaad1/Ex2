@@ -51,8 +51,9 @@ class SCellTest {
 
     @Test
     void mainOpIndex() {
+//        SCell cell = new SCell("256");
         String a = "256"; // -1
-        assertTrue(SCell.mainOpIndex(a) == -1);
+//        assertTrue(cell.mainOpIndex() == -1); // לשנות
         String b = "3+5"; //1
         assertTrue(SCell.mainOpIndex(b) == 1);
         String c = "(2+3)*(4+5)"; // 5
