@@ -89,11 +89,13 @@ public class Ex2Sheet implements Sheet {
 
     @Override
     public int width() {
+
         return table.length;
     }
 
     @Override
     public int height() {
+
         return table[0].length;
     }
 
@@ -116,6 +118,17 @@ public class Ex2Sheet implements Sheet {
     @Override
     public void eval() {
         int[][] dd = depth();
+        int currentDepth = -1;
+
+        for (int i = 0; i < width(); i++) {
+            for (int j = 0; j < height(); j++) {
+                if (dd[i][j] == currentDepth){
+                   value(i, j);
+                }
+            }
+        }
+
+
         // Add your code here
 
         // ///////////////////
@@ -150,8 +163,8 @@ public class Ex2Sheet implements Sheet {
                         computable = true;
                     }
                 }
-                depth ++;
             } // end for
+            depth ++;
         } //end while
         return ans;
     }
