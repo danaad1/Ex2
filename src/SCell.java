@@ -183,19 +183,23 @@ public class SCell implements Cell {
 
     public static boolean valForm(String num){
 //        boolean ans = true;
-        if (isNumber(num)){ // if num is a number
+        if (parentheses(num)) {
+            num = removeParen(num);
+        }
+            if (isNumber(num)){ // if num is a number
             return true;
         }
         if (isCell(num)){ // if num is a cell
             return true;
         }
-        if (parentheses(num)){
-            num = removeParen(num); // remove unnecessary parentheses
-            int opIndex = mainOpIndex(num);
-            if ( valForm(num.substring(0 , opIndex)) && valForm(num.substring(opIndex+1))){ //both sides of op index are forms
-                return true;
-            }
-        }
+//        if (parentheses(num)){
+//            num = removeParen(num); // remove unnecessary parentheses
+//            int opIndex = mainOpIndex(num);
+//            if ( valForm(num.substring(0 , opIndex)) && valForm(num.substring(opIndex+1))){ //both sides of op index are forms
+//                return true;
+//            }
+//        }
+        int opIndex = mainOpIndex(num);
         if ( valForm(num.substring(0 , mainOpIndex(num)-1)) && valForm(num.substring(mainOpIndex(num)+1))){ //both sides of op index are forms
             return true;
         }
@@ -227,6 +231,7 @@ public class SCell implements Cell {
                 counter ++;
             }
             if (num.charAt(i) == ')'){
+//                counter --;
                 counter = 0;
             }
         }
@@ -286,7 +291,7 @@ public class SCell implements Cell {
             }
             int w = num.length();
             if (index == num.length() - 1) {
-                ans = num.substring(0, index);
+                ans = removeParen(num.substring(0, index));
             }
         }
         return ans;
