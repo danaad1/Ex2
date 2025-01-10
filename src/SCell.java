@@ -120,6 +120,7 @@ public class SCell implements Cell {
             ans = false;
         } else {
             num = num.substring(1);
+            num = removeParen(num);
             if (num.isEmpty() || !valForm(num)) { // if there's only = in num and the rest isn't a valid formula
                 ans = false;
             }
@@ -130,12 +131,15 @@ public class SCell implements Cell {
     }
 
     public double computeForm () {
-        return computeFormPart(getData());
+        return computeFormPart(getData().substring(1));
     }
 
     public double computeFormPart (String form) {
         double ans = 0;
-        // TODO: remove form from function
+        if (parentheses(form)){
+            form = removeParen(form); // remove unnecessary parentheses
+        }
+
         if (isNumber(form)){ // if num is a number
             ans = Double.parseDouble(form);
         }
@@ -146,10 +150,10 @@ public class SCell implements Cell {
             }
             else{
 //                int opIndex = mainOpIndex(form);
-                if (parentheses(form)){
-                    form = removeParen(form); // remove unnecessary parentheses
-//                    opIndex = mainOpIndex(form);
-                }
+//                if (parentheses(form)){
+//                    form = removeParen(form); // remove unnecessary parentheses
+////                    opIndex = mainOpIndex(form);
+//                }
                 int opIndex = mainOpIndex(form);
                 double left = computeFormPart(form.substring(0 , opIndex));
                 double right = computeFormPart(form.substring(opIndex+1));
@@ -186,7 +190,7 @@ public class SCell implements Cell {
             return true;
         }
         if (parentheses(num)){
-            removeParen(num); // remove unnecessary parentheses
+            num = removeParen(num); // remove unnecessary parentheses
             int opIndex = mainOpIndex(num);
             if ( valForm(num.substring(0 , opIndex)) && valForm(num.substring(opIndex+1))){ //both sides of op index are forms
                 return true;

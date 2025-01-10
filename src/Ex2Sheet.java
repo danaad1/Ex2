@@ -24,29 +24,12 @@ public class Ex2Sheet implements Sheet {
     public String value(int x, int y) {
         String ans = Ex2Utils.EMPTY_CELL;
         SCell a = table[x][y];
-//        int cellType = a.getType();
-
         // Add your code here
 
-        SCell c = get(x, y);
-        if (c != null) {
-            if (c.getType() == 3) {
-                ans = eval(x, y);
-            }
-//            switch (cellType) {
-//                case 1: // text
-//                    ans = a.getData(); // צריך טוסטרינג?
-//                case 2: // number
-//                    ans = a.getData().toString(); // צריך טוסטרינג?
-//                case 3: //form
-//                    ans = eval(x, y);
-//                case -2: //ERR_FORM_FORMAT
-//                case -1:  //ERR_CYCLE_FORM
-//            }
-            ans = c.toString();// מחזיר את הערך של התא אבל לא מחשב נוסחא
-
+//        SCell c = get(x, y);
+        if (a != null) {
+            ans = eval(x, y);
         }
-
         /////////////////////
         //        TEXT=1, NUMBER=2, FORM=3, ERR_FORM_FORMAT=-2, ERR_CYCLE_FORM=-1, ERR=-1
 // אם פורמולה לחשב ולהחזיר את הערך של הפורמולה אם לא פורמולה לעשות
@@ -178,20 +161,24 @@ public class Ex2Sheet implements Sheet {
 
     @Override
     public String eval(int x, int y) {
-        String ans = null;
-        Cell c = get(x, y);
-        if (get(x, y) != null) {
-            ans = c/*get(x, y)*/.toString();
+        String ans = "";
+        SCell c = get(x, y);
+        if (c != null) {
+            switch (c.getType()) {
+                case 1: // text
+                    ans = c.getData();
+                    break;
+                case 2: // number
+                    ans = String.valueOf(Double.parseDouble(c.getData()));
+                    break;
+                case 3: // formula
+                    ans = String.valueOf(c.computeForm());
+            }
+//            ans = c.toString();
         }
         // Add your code here
 
         /////////////////////
-
-        if(c.getType() == 3) {
-
-
-        }
-
         return ans;
     }
 

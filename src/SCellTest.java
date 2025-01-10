@@ -47,6 +47,7 @@ class SCellTest {
 
     @Test
     void valForm() {
+
     }
 
     @Test
@@ -104,19 +105,23 @@ class SCellTest {
 
     @Test
     void testComputeForm() {
-        SCell a = new SCell("3+5");
+        SCell a = new SCell("=3+5");
         assertTrue(a.computeForm() == 8);
-        a.setData("3+5+2");
+        a.setData("=(3)");
+        assertTrue(a.computeForm() == 3);
+//        a.setData("(=3)");
+//        assertTrue(a.computeForm() == 3);
+        a.setData("=3+5+2");
         assertTrue(a.computeForm() == 10);
-        a.setData("10/2");
+        a.setData("=10/2");
         assertTrue(a.computeForm() == 5);
-        a.setData("10*2");
+        a.setData("=10*2");
         assertTrue(a.computeForm() == 20);
-        a.setData("10*2+2");
+        a.setData("=10*2+2");
         assertTrue(a.computeForm() == 22);
-        a.setData("(5+5)*2");
+        a.setData("=(5+5)*2");
         assertTrue(a.computeForm() == 20);
-        a.setData("(5+5)*(2-1)");
+        a.setData("=(5+5)*(2-1)");
         assertTrue(a.computeForm() == 10);
 
 
