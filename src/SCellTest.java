@@ -63,24 +63,28 @@ class SCellTest {
 //        SCell cell = new SCell("256");
         String a = "256"; // -1
 //        assertTrue(cell.mainOpIndex() == -1); // לשנות
-//        String b = "3+5"; //1
-//        assertTrue(SCell.mainOpIndex(b) == 1);
-//        String c = "(2+3)*(4+5)"; // 5
-//        assertTrue(SCell.mainOpIndex(c) == 5);
-//        String d = "(((5)))"; // -1
-//        assertTrue(SCell.mainOpIndex(d) == -1);
-//        String e = "3+(4*(5/2))"; // 1
-//        assertTrue(SCell.mainOpIndex(e) == 1);
-//        String f = "(A5+(2*3))-2"; //10
-//        assertTrue(SCell.mainOpIndex(f) == 10);
-//        String g = "((2+5)-3)+5+(4-2)"; //11
-//        assertTrue(SCell.mainOpIndex(g) == 11);
-//        String h = "(2+(3-(4+(5-6))+6)+7)"; //18
-//        assertTrue(SCell.mainOpIndex(h) == 18);
+        String b = "3+5"; //1
+        assertTrue(SCell.mainOpIndex(b) == 1);
+        String c = "(2+3)*(4+5)"; // 5
+        assertTrue(SCell.mainOpIndex(c) == 5);
+        String d = "(((5)))"; // -1
+        assertTrue(SCell.mainOpIndex(d) == -1);
+        String e = "3+(4*(5/2))"; // 1
+        assertTrue(SCell.mainOpIndex(e) == 1);
+        String f = "(A5+(2*3))-2"; //10
+        assertTrue(SCell.mainOpIndex(f) == 10);
+        String g = "((2+5)-3)+5+(4-2)"; //11
+        assertTrue(SCell.mainOpIndex(g) == 11);
+        String h = "(2+(3-(4+(5-6))+6)+7)"; //18
+        assertTrue(SCell.mainOpIndex(h) == 18);
         String k = "(2+5)+(3+5)*3";
         assertTrue(SCell.mainOpIndex(k) == 5);
-//        String l = "1+2*(3-8)+2";
-//        assertTrue(SCell.mainOpIndex(l) == 9);
+        String l = "1+2*(3-8)+2";
+        assertTrue(SCell.mainOpIndex(l) == 9);
+        String m = "3+5*3";
+        assertTrue(SCell.mainOpIndex(m) == 1);
+        String n = "2+5*6-9/8";
+        assertTrue(SCell.mainOpIndex(n) == 5);
     }
 
     @Test

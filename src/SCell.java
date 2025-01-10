@@ -218,6 +218,7 @@ public class SCell implements Cell {
                 if (counter <= minCount){ // if value of arithmetic is the smallest - last to be calc'
                     maimIndex = i; // save index of minimal value arithmetic
                     minCount = counter;
+                    counter = 0 ; // TODO: לבדוק אם זה טוב
                 }
             }
             if (num.charAt(i) == '-' || num.charAt(i) == '+'){
@@ -225,6 +226,8 @@ public class SCell implements Cell {
                 if (counter <= minCount){ // if value of arithmetic is the smallest - last to be calc'
                     maimIndex = i; // save index of minimal value arithmetic
                     minCount = counter;
+                    counter = 0 ; // TODO: לבדוק אם זה טוב
+
                 }
             }
             if (num.charAt(i) == '('){
