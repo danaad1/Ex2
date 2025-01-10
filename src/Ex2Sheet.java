@@ -17,7 +17,6 @@ public class Ex2Sheet implements Sheet {
     }
 
     public Ex2Sheet() {
-
         this(Ex2Utils.WIDTH, Ex2Utils.HEIGHT);
     }
 
@@ -70,20 +69,9 @@ public class Ex2Sheet implements Sheet {
         String cell = cellVal(cords);
         int xCord = Integer.parseInt(cell.substring(0, 1)); // x coordinates
         int yCord = Integer.parseInt(cell.substring(1));// y coordinates
-        if (isIn(xCord, yCord)) {
+        if (isIn(xCord, yCord)) { // if the cell is in the table
             ans = get(xCord, yCord);
         }
-//        String thisCell = xCord + "," + yCord;  // the string form of the cell
-
-//        if (isCell(cords)){
-//            xCord = String.valueOf(letters.indexOf(cords.charAt(0))); //the string value of the cell letter
-//            yCord = cords.substring(1); // only the number of the cell
-//            ans.setData(cell); // change cell and accordingly
-//        }
-//        if (isIn(Integer.parseInt(xCord), Integer.parseInt(yCord))) {
-//            ans = null;
-//        }
-
         return ans;
     }
 
@@ -105,14 +93,6 @@ public class Ex2Sheet implements Sheet {
         SCell c = new SCell(s);
         table[x][y] = c;
         }
-
-        // Add your code here
-
-        /////////////////////
-
-//        String xCord = String.valueOf(x); // A-z
-//        String yCord = String.valueOf(y);
-
     }
 
     @Override
@@ -247,7 +227,7 @@ public class Ex2Sheet implements Sheet {
 //        int[][] ans = new int[width()][height()];
         for (int i = 0; i < a.length; i++) {
             for (int j = 0; j < a[i].length; j++) {
-               a[i][j] = -1;
+               a[i][j] = 0;     // TEMP: -1;
             }
         }
     }
@@ -261,15 +241,13 @@ public class Ex2Sheet implements Sheet {
                 String substring = checkForCell.substring(i, j);
                 if (SCell.isCell(substring)) {
                     found = true;
-
                 }
             }
             if (found) {
                 break;
             }
         }
-
         return ans;
-    }
+    } //containsValCellName
 
 }

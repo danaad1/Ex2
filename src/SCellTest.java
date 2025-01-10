@@ -101,4 +101,11 @@ class SCellTest {
 
 
     }
+
+    @Test
+    void testComputeForm() {
+        SCell a = new SCell("3+5");
+        assertTrue(a.computeForm("3+5") == 8);
+
+    }
 }

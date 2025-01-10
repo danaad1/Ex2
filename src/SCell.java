@@ -31,6 +31,7 @@ public class SCell implements Cell {
         // Add your code here
         line = s;
         /////////////////////
+
         if (isNumber(s)){
             setType(Ex2Utils.NUMBER);
         }
@@ -97,10 +98,10 @@ public class SCell implements Cell {
      */
     public static boolean isText(String num){
         boolean ans = true;
-        if (num.charAt(0) == '=' || isNumber(num) || isForm(num)) { //if num is either formula or just a number
+
+        if (num.isEmpty() || num.charAt(0) == '=' || isNumber(num) || isForm(num)) { //if num is either formula or just a number
             ans = false;
         }
-
         return ans;
     }
 
@@ -111,23 +112,69 @@ public class SCell implements Cell {
      */
     public static boolean isForm(String num) {
         boolean ans = true;
-        if (num.charAt(0) != '='){ // if the first index isn't '=' - not formula
-            ans = false;
+        if (num.isEmpty()){
+            return false;
         }
-        else {
+
+        if (num.charAt(0) != '=') { // if the first index isn't '=' - not formula
+            ans = false;
+        } else {
             num = num.substring(1);
-            if (num.isEmpty() || !valForm(num)){ // if there's only = in num and the rest isn't a valid formula
+            if (num.isEmpty() || !valForm(num)) { // if there's only = in num and the rest isn't a valid formula
                 ans = false;
             }
         }
+
         return ans;
+
     }
 
-    double computeForm (String num) {
+    public double computeForm (String form) {
         double ans = 0;
+        // TODO: remove form from function
+        //form = getData();
+        if (isNumber(form)){ // if num is a number
+            ans = Double.parseDouble(form);
+        }
+        else {
+            if (isCell(form)) {// if num is a cell
+                SCell c = new SCell(form);
+                ans = computeForm(c.getData()); //compute the content of the cell
+            }
+            else{
+                int opIndex = mainOpIndex(form);
+                //        if (parentheses(form)){
+                //            removeParen(form); // remove unnecessary parentheses
+                //            int opIndex = mainOpIndex(form);//
+                //            if
+                //            if ( valForm(form.substring(0 , opIndex)) && valForm(num.substring(opIndex+1))){ //both sides of op index are forms
+                //                return true;
+                //            }
+                //        }
+                double left = computeForm(form.substring(0 , opIndex));
+                double right = computeForm(form.substring(opIndex+1));
 
+                char op = form.charAt(opIndex) ;  //   "+" : "-" : "/" : "*;
+                switch (op) {
+                    case '+':
+                        ans = left + right;
+                        break;
+                    case '-':
+                        ans = left - right;
+                        break;
+                    case '/':
+                        ans = left / right;
+                        break;
+                    case '*':
+                        ans = left * right;
+                        break;
+                }
+            }
+
+
+
+        }
         return ans;
-
     }
 
     public static boolean valForm(String num){
@@ -140,7 +187,8 @@ public class SCell implements Cell {
         }
         if (parentheses(num)){
             removeParen(num); // remove unnecessary parentheses
-            if ( valForm(num.substring(0 , mainOpIndex(num)-1)) && valForm(num.substring(mainOpIndex(num)+1))){ //both sides of op index are forms
+            int opIndex = mainOpIndex(num);
+            if ( valForm(num.substring(0 , opIndex)) && valForm(num.substring(opIndex+1))){ //both sides of op index are forms
                 return true;
             }
         }
@@ -213,7 +261,7 @@ public class SCell implements Cell {
     public static String removeParen (String num){
         String ans = num;
         int count = -1;
-        if (num.charAt(0) == '('){// if the first index is an open parentheses
+        if (!num.isEmpty() && num.charAt(0) == '('){// if the first index is an open parentheses
             count = 1;
             num = num.substring(1);
             int index = 0; // the index of the closing parentheses
@@ -239,5 +287,26 @@ public class SCell implements Cell {
         }
         return ans;
     }
+
+//    public double computeForm(String form){
+//        double ans = 0;
+//        if (isNumber(form)){ // if num is a number
+//            ans = Double.parseDouble(form);
+//        }
+//        if (isCell(form)){ // if num is a cell
+//            ans = computeForm(form.getD) ;
+//        }
+//        if (parentheses(form)){
+//            removeParen(form); // remove unnecessary parentheses
+//            int opIndex = mainOpIndex(form);
+//            if ( valForm(num.substring(0 , opIndex)) && valForm(num.substring(opIndex+1))){ //both sides of op index are forms
+//                return true;
+//            }
+//        }
+//        if ( valForm(num.substring(0 , mainOpIndex(num)-1)) && valForm(num.substring(mainOpIndex(num)+1))){ //both sides of op index are forms
+//            return true;
+//        }
+//        return false;
+//    }
 
 }
