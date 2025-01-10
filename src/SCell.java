@@ -129,30 +129,30 @@ public class SCell implements Cell {
 
     }
 
-    public double computeForm (String form) {
+    public double computeForm () {
+        return computeFormPart(getData());
+    }
+
+    public double computeFormPart (String form) {
         double ans = 0;
         // TODO: remove form from function
-        //form = getData();
         if (isNumber(form)){ // if num is a number
             ans = Double.parseDouble(form);
         }
         else {
             if (isCell(form)) {// if num is a cell
                 SCell c = new SCell(form);
-                ans = computeForm(c.getData()); //compute the content of the cell
+                ans = computeFormPart(c.getData()); //compute the content of the cell
             }
             else{
+//                int opIndex = mainOpIndex(form);
+                if (parentheses(form)){
+                    form = removeParen(form); // remove unnecessary parentheses
+//                    opIndex = mainOpIndex(form);
+                }
                 int opIndex = mainOpIndex(form);
-                //        if (parentheses(form)){
-                //            removeParen(form); // remove unnecessary parentheses
-                //            int opIndex = mainOpIndex(form);//
-                //            if
-                //            if ( valForm(form.substring(0 , opIndex)) && valForm(num.substring(opIndex+1))){ //both sides of op index are forms
-                //                return true;
-                //            }
-                //        }
-                double left = computeForm(form.substring(0 , opIndex));
-                double right = computeForm(form.substring(opIndex+1));
+                double left = computeFormPart(form.substring(0 , opIndex));
+                double right = computeFormPart(form.substring(opIndex+1));
 
                 char op = form.charAt(opIndex) ;  //   "+" : "-" : "/" : "*;
                 switch (op) {
