@@ -37,12 +37,12 @@ class SCellTest {
 
     @Test
     void isForm() {
-
-
+        // TODO: create test.
     }
 
     @Test
     void computeForm() {
+        // TODO: create test.
     }
 
     @Test
@@ -60,9 +60,8 @@ class SCellTest {
 
     @Test
     void mainOpIndex() {
-//        SCell cell = new SCell("256");
         String a = "256"; // -1
-//        assertTrue(cell.mainOpIndex() == -1); // לשנות
+        assertTrue(SCell.mainOpIndex(a) == -1);
         String b = "3+5"; //1
         assertTrue(SCell.mainOpIndex(b) == 1);
         String c = "(2+3)*(4+5)"; // 5
@@ -123,25 +122,25 @@ class SCellTest {
 
     }
 
-    @Test
-    void testComputeForm() {
-        SCell a = new SCell("=3+5");
-        assertTrue(a.computeForm() == 8);
-        a.setData("=(3)");
-        assertTrue(a.computeForm() == 3);
-        a.setData("=3+5+2");
-        assertTrue(a.computeForm() == 10);
-        a.setData("=10/2");
-        assertTrue(a.computeForm() == 5);
-        a.setData("=10*2");
-        assertTrue(a.computeForm() == 20);
-        a.setData("=10*2+2");
-        assertTrue(a.computeForm() == 22);
-        a.setData("=(5+5)*2");
-        assertTrue(a.computeForm() == 20);
-        a.setData("=(5+5)*(2-1)");
-        assertTrue(a.computeForm() == 10);
-
-
-    }
+//    @Test
+//    void testComputeForm() {
+//        SCell a = new SCell("=3+5");
+//        assertTrue(a.computeForm() == 8);
+//        a.setData("=(3)");
+//        assertTrue(a.computeForm() == 3);
+//        a.setData("=3+5+2");
+//        assertTrue(a.computeForm() == 10);
+//        a.setData("=10/2");
+//        assertTrue(a.computeForm() == 5);
+//        a.setData("=10*2");
+//        assertTrue(a.computeForm() == 20);
+//        a.setData("=10*2+2");
+//        assertTrue(a.computeForm() == 22);
+//        a.setData("=(5+5)*2");
+//        assertTrue(a.computeForm() == 20);
+//        a.setData("=(5+5)*(2-1)");
+//        assertTrue(a.computeForm() == 10);
+//
+//
+//    }
 }

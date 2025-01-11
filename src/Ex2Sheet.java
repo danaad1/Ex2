@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 // Add your documentation below:
 
 public class Ex2Sheet implements Sheet {
@@ -83,10 +84,12 @@ public class Ex2Sheet implements Sheet {
         int[][] dd = depth();
         int currentDepth = -1;
 
-        for (int i = 0; i < width(); i++) {
-            for (int j = 0; j < height(); j++) {
-                if (dd[i][j] == currentDepth){
-                   value(i, j);
+        for (int d=0; d<10; d++) {
+            for (int i = 0; i < width(); i++) {
+                for (int j = 0; j < height(); j++) {
+                    if (dd[i][j] == currentDepth) {
+                        value(i, j);
+                    }
                 }
             }
         }
@@ -165,6 +168,9 @@ public class Ex2Sheet implements Sheet {
         SCell c = get(x, y);
         if (c != null) {
             switch (c.getType()) {
+                case -1:
+                    ans = "error";
+                    break;
                 case 1: // text
                     ans = c.getData();
                     break;
@@ -172,7 +178,9 @@ public class Ex2Sheet implements Sheet {
                     ans = String.valueOf(Double.parseDouble(c.getData()));
                     break;
                 case 3: // formula
-                    ans = String.valueOf(c.computeForm());
+                    ArrayList<String> cellList = new ArrayList<String>();
+                    cellList.add((char)(x+65)+String.valueOf(y));
+                    ans = String.valueOf(computeForm(c, cellList));
             }
 //            ans = c.toString();
         }
@@ -181,16 +189,94 @@ public class Ex2Sheet implements Sheet {
         /////////////////////
         return ans;
     }
-
-//    public static boolean isCell(String a) {
-//        boolean ans = true;
-//        String regex = "^[A-Za-z][0-99]"; // צריך להיות הצמד לסוף
-//        if (!a.matches(regex)) {
-//            ans = false;
+//    public boolean containsCellLoop(SCell cell) {
+//        boolean ans = false;
+////        String content = cell.getData();
+//        ArrayList<String> cellList = new ArrayList<String>();
+//        cellList.add(String.valueOf(cell));
+//        if (containsValCellName(cell)){
+//
+//
 //        }
-//        return ans;
+//       return ans;
 //    }
 
+
+    public double computeForm (SCell cell, ArrayList<String> cellList) {
+//        String str = getData();
+//        if (str.charAt(0)=='='){
+//            str = str.substring(1);
+//        }
+//        return computeFormPart(str, sheet);
+//        ArrayList<String> cellList = new ArrayList<String>();
+//        cellList.add(this);
+        return computeFormPart(cell, cell.getData(), cellList);
+    }
+
+    public double computeFormPart (SCell cell, String form, ArrayList<String> cellList ) {
+        double ans = 0;
+
+//        String form = cell.getData();
+
+        if (form.charAt(0)=='='){
+            form = form.substring(1);
+        }
+
+        if (SCell.parentheses(form)){
+            form = SCell.removeParen(form); // remove unnecessary parentheses
+        }
+
+        if (SCell.isNumber(form)){ // if num is a number
+            ans = Double.parseDouble(form);
+        }
+        else {
+            if (SCell.isCell(form)) {// if num is a cell
+//                SCell c = new SCell(form);
+                if (cellList.contains(form)){
+//                    SCell c = get(0,0);
+                    cell.setType(-1);
+                    return 0;
+                    //Ex2Utils.ERR_CYCLE_FORM;
+                }
+                cellList.add(form);
+                String ref = this.get(form).getData();
+                ans = computeFormPart(cell, ref, cellList); //compute the content of the cell
+            }
+            else{
+
+                int opIndex = SCell.mainOpIndex(form);
+                double left = computeFormPart(cell, form.substring(0 , opIndex), cellList);
+                double right = computeFormPart(cell, form.substring(opIndex+1), cellList);
+
+                char op = form.charAt(opIndex) ;  //   "+" : "-" : "/" : "*;
+                switch (op) {
+                    case '+':
+                        ans = left + right;
+                        break;
+                    case '-':
+                        ans = left - right;
+                        break;
+                    case '/':
+                        ans = left / right;
+                        break;
+                    case '*':
+                        ans = left * right;
+                        break;
+                }
+            }
+
+
+
+        }
+        return ans;
+    }
+
+
+    /**
+     * this function receives a cell represented as a string (i.e A0) and returns its numeric value as a string (i.e 00)
+     * @param s a cell represented as a string (i.e A0)
+     * @return the cell numeric value as a string (i.e 00)
+     */
     public String cellVal(String s) {
         String ans = null;
         String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -219,8 +305,7 @@ public class Ex2Sheet implements Sheet {
         }
     }
 
-    public boolean containsValCellName(Cell c) {
-        boolean ans = false;
+    public boolean containsValCellName(SCell c) {
         boolean found = false;
         String checkForCell  = c.toString();
         for (int i = 0; i < checkForCell.length(); i++) {
@@ -234,7 +319,30 @@ public class Ex2Sheet implements Sheet {
                 break;
             }
         }
-        return ans;
+        return found;
     } //containsValCellName
+
+//    public String findCell (String str){
+//
+//
+//    }
+//
+//    public boolean cellLoop (SCell cell){ //to be called only if cell contains formula
+//        ArrayList<String> cellList = new ArrayList<String>();
+//        String thisCell = cellVal(String.valueOf(cell));
+//        cellList.add(thisCell);
+//
+//       String a = cell.getData().substring(1); // -"="
+//        if (SCell.mainOpIndex(a)==-1){
+//            if (cellList.contains(a)){
+//                return true;
+//            }
+//
+//        }
+//        else{
+//
+//        }
+//    }
+
 
 }

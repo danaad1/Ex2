@@ -1,5 +1,7 @@
 // Add your documentation below:
 
+import java.util.ArrayList;
+
 public class SCell implements Cell {
     private String line;
     private int type;
@@ -115,6 +117,7 @@ public class SCell implements Cell {
         if (num.isEmpty()){
             return false;
         }
+        // TODO: change functions yo not static
 
         if (num.charAt(0) != '=') { // if the first index isn't '=' - not formula
             ans = false;
@@ -123,6 +126,7 @@ public class SCell implements Cell {
             num = removeParen(num);
             if (num.isEmpty() || !valForm(num)) { // if there's only = in num and the rest isn't a valid formula
                 ans = false;
+//                setType(Ex2Utils.ERR_FORM);
             }
         }
 
@@ -130,56 +134,69 @@ public class SCell implements Cell {
 
     }
 
-    public double computeForm () {
-        return computeFormPart(getData().substring(1));
-    }
-
-    public double computeFormPart (String form) {
-        double ans = 0;
-        if (parentheses(form)){
-            form = removeParen(form); // remove unnecessary parentheses
-        }
-
-        if (isNumber(form)){ // if num is a number
-            ans = Double.parseDouble(form);
-        }
-        else {
-            if (isCell(form)) {// if num is a cell
-                SCell c = new SCell(form);
-                ans = computeFormPart(c.getData()); //compute the content of the cell
-            }
-            else{
-//                int opIndex = mainOpIndex(form);
-//                if (parentheses(form)){
-//                    form = removeParen(form); // remove unnecessary parentheses
-////                    opIndex = mainOpIndex(form);
+//    public double computeForm (Ex2Sheet sheet) {
+////        String str = getData();
+////        if (str.charAt(0)=='='){
+////            str = str.substring(1);
+////        }
+////        return computeFormPart(str, sheet);
+//        ArrayList<String> cellList = new ArrayList<String>();
+//        cellList.add("j");
+//        return computeFormPart(getData(), sheet, cellList);
+//    }
+//
+//    public double computeFormPart (String form, Ex2Sheet sheet, ArrayList<String> cellList ) {
+//        double ans = 0;
+//
+//        if (form.charAt(0)=='='){
+//            form = form.substring(1);
+//        }
+//
+//        if (parentheses(form)){
+//            form = removeParen(form); // remove unnecessary parentheses
+//        }
+//
+//        if (isNumber(form)){ // if num is a number
+//            ans = Double.parseDouble(form);
+//        }
+//        else {
+//            if (isCell(form)) {// if num is a cell
+////                SCell c = new SCell(form);
+//                if (cellList.contains(form)){
+//                    return Ex2Utils.ERR_CYCLE_FORM;
 //                }
-                int opIndex = mainOpIndex(form);
-                double left = computeFormPart(form.substring(0 , opIndex));
-                double right = computeFormPart(form.substring(opIndex+1));
-
-                char op = form.charAt(opIndex) ;  //   "+" : "-" : "/" : "*;
-                switch (op) {
-                    case '+':
-                        ans = left + right;
-                        break;
-                    case '-':
-                        ans = left - right;
-                        break;
-                    case '/':
-                        ans = left / right;
-                        break;
-                    case '*':
-                        ans = left * right;
-                        break;
-                }
-            }
-
-
-
-        }
-        return ans;
-    }
+//                cellList.add(form);
+//                String ref = sheet.get(form).getData();
+//                ans = computeFormPart(ref, sheet, cellList); //compute the content of the cell
+//            }
+//            else{
+//
+//                int opIndex = mainOpIndex(form);
+//                double left = computeFormPart(form.substring(0 , opIndex), sheet, cellList);
+//                double right = computeFormPart(form.substring(opIndex+1), sheet, cellList);
+//
+//                char op = form.charAt(opIndex) ;  //   "+" : "-" : "/" : "*;
+//                switch (op) {
+//                    case '+':
+//                        ans = left + right;
+//                        break;
+//                    case '-':
+//                        ans = left - right;
+//                        break;
+//                    case '/':
+//                        ans = left / right;
+//                        break;
+//                    case '*':
+//                        ans = left * right;
+//                        break;
+//                }
+//            }
+//
+//
+//
+//        }
+//        return ans;
+//    }
 
     public static boolean valForm(String num){
 //        boolean ans = true;
