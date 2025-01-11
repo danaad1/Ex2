@@ -37,10 +37,10 @@ public class SCell implements Cell {
         if (isNumber(s)){
             setType(Ex2Utils.NUMBER);
         }
-        if(isForm(s)){
+        if(isForm()){
             setType(Ex2Utils.FORM);
         }
-        if(isText(s)){
+        if(isText()){
             setType(Ex2Utils.TEXT);
         }
     }
@@ -79,8 +79,6 @@ public class SCell implements Cell {
 
     /**
      * this function checks if a given string is a number
-     *
-     * @param num
      * @return
      */
     public static boolean isNumber(String num){
@@ -95,13 +93,12 @@ public class SCell implements Cell {
     }
     /**
      * this function checks is a given string is in the form of a text
-     * @param num
      * @return true when num is a text
      */
-    public static boolean isText(String num){
+    public boolean isText(){
         boolean ans = true;
-
-        if (num.isEmpty() || num.charAt(0) == '=' || isNumber(num) || isForm(num)) { //if num is either formula or just a number
+        String num = this.getData();
+        if (num.isEmpty() || num.charAt(0) == '=' || isNumber(num) || isForm()) { //if num is either formula or just a number
             ans = false;
         }
         return ans;
@@ -109,24 +106,24 @@ public class SCell implements Cell {
 
     /**
      * this function checks if a given string is in the form of a formula
-     * @param num
      * @return true when num is a valid formula
      */
-    public static boolean isForm(String num) {
+    public boolean isForm(/*String num*/) {
         boolean ans = true;
-        if (num.isEmpty()){
+        String str = getData();
+        if (str.isEmpty()){
             return false;
         }
         // TODO: change functions yo not static
 
-        if (num.charAt(0) != '=') { // if the first index isn't '=' - not formula
+        if (str.charAt(0) != '=') { // if the first index isn't '=' - not formula
             ans = false;
         } else {
-            num = num.substring(1);
-            num = removeParen(num);
-            if (num.isEmpty() || !valForm(num)) { // if there's only = in num and the rest isn't a valid formula
+            str = str.substring(1);
+            str = removeParen(str);
+            if (str.isEmpty() || !valForm(str)) { // if there's only = in num and the rest isn't a valid formula
                 ans = false;
-//                setType(Ex2Utils.ERR_FORM);
+                setType(Ex2Utils.ERR_FORM_FORMAT);
             }
         }
 

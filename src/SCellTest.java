@@ -7,7 +7,8 @@ class SCellTest {
 
     @Test
     void isNumber() {
-        String[] good = { "-35.32", "123", "21.03" , "0.002" , "2.6", "8.0" , "1.000" , "-9" , "-4" };
+
+        String[] good = {"-35.32", "123", "21.03", "0.002", "2.6", "8.0", "1.000", "-9", "-4"};
         for (int i = 0; i < good.length; i++) {
             boolean a = SCell.isNumber(good[i]);
             assertTrue(a);
@@ -20,19 +21,36 @@ class SCellTest {
         }
     }
 
+
     @Test
     void isText() {
-        String[] good = {"-4s", "biso", "abc", "hello world" , "2 *#" , "2..3", "8.0o" , "..." , "BSH" };
-        for (int i = 0; i < good.length; i++) {
-            boolean a = SCell.isText(good[i]);
-            assertTrue(a);
-        }
+        SCell a = new SCell("-4s");
+        assertTrue(a.isText());
+        a.setData("biso");
+        assertTrue(a.isText());
+        a.setData("abc");
+        assertTrue(a.isText());
+        a.setData("abc");
+        assertTrue(a.isText());
+        a.setData("hello world");
+        assertTrue(a.isText());
+        a.setData("2..3");
+        assertTrue(a.isText());
+        a.setData("8.0o");
+        assertTrue(a.isText());
+        a.setData("...");
+        assertTrue(a.isText());
+        a.setData("BSH");
+        assertTrue(a.isText());
+        a.setData("2 *#");
+        assertTrue(a.isText());
 
-        String[] bad = {"56" , "=3 "/*, "3=()"*/ , "5.32" };
-        for (int i = 0; i < bad.length; i++) {
-            boolean a = SCell.isText(bad[i]);
-            assertFalse(a);
-        }
+        a.setData("56");
+        assertFalse(a.isText());
+        a.setData("=3 ");
+        assertFalse(a.isText());
+        a.setData("5.32");
+        assertFalse(a.isText());
     }
 
     @Test
