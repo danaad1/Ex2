@@ -52,10 +52,10 @@ class SCellTest {
             assertTrue(SCell.valForm(good[i]));
         }
 
-//        String[] bad = {"sd56" , "1. 0" , "5.32a" , "58.%" , "89-3" , "(=3)" , "(2+5"};
-//        for (int i = 0; i < bad.length; i++) {
-//            assertFalse(SCell.valForm(bad[i]));
-//        }
+        String[] bad = {"sd56" , "5.32a" , "58.%" , "(=3)" , "(2+5"};
+        for (int i = 0; i < bad.length; i++) {
+            assertFalse(SCell.valForm(bad[i]));
+        }
     }
 
     @Test

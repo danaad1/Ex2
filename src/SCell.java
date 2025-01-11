@@ -186,7 +186,7 @@ public class SCell implements Cell {
         if (parentheses(num)) {
             num = removeParen(num);
         }
-            if (isNumber(num)){ // if num is a number
+        if (isNumber(num)){ // if num is a number
             return true;
         }
         if (isCell(num)){ // if num is a cell
@@ -200,7 +200,10 @@ public class SCell implements Cell {
 //            }
 //        }
         int opIndex = mainOpIndex(num);
-        if ( valForm(num.substring(0 , mainOpIndex(num)-1)) && valForm(num.substring(mainOpIndex(num)+1))){ //both sides of op index are forms
+        if (opIndex == -1){
+            return false;
+        }
+        if ( valForm(num.substring(0 , mainOpIndex(num))) && valForm(num.substring(mainOpIndex(num)+1))){ //both sides of op index are forms
             return true;
         }
         return false;
