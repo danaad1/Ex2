@@ -168,8 +168,11 @@ public class Ex2Sheet implements Sheet {
         SCell c = get(x, y);
         if (c != null) {
             switch (c.getType()) {
+                case -2 :
+                    ans = "ERR_FORM_FORMAT";
+                    break;
                 case -1:
-                    ans = "error";
+                    ans = "ERR_CYCLE_FORM";
                     break;
                 case 1: // text
                     ans = c.getData();
