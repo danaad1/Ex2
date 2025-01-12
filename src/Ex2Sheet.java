@@ -222,7 +222,8 @@ public class Ex2Sheet implements Sheet {
 
 //        String form = cell.getData();
 
-        if (form.charAt(0)=='='){
+//        if (form.charAt(0)=='='){
+            if (form.startsWith("=")){
             form = form.substring(1);
             if (form.charAt(0)== '-' || form.charAt(0) =='+') {
                 form = "0" + form;

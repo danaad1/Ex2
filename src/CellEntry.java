@@ -10,8 +10,8 @@ public class CellEntry  implements Index2D {
      * @param y
      */
     public CellEntry(int x, int y) {
-      _x = x;
-      _y = y;
+      this._x = x;
+      this._y = y;
     }
     public  CellEntry(String str) {
         if (SCell.isCell(str)){
@@ -26,6 +26,8 @@ public class CellEntry  implements Index2D {
      */
     @Override
     public boolean isValid() {
+
+        // add index is null || is empty
         String regex = "[A-Za-z]";
         String REGEX ="[0-99]";
         if (String.valueOf(_x).matches(regex) && String.valueOf(_y).matches(REGEX)){
