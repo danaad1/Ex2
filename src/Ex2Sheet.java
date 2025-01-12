@@ -235,47 +235,50 @@ public class Ex2Sheet implements Sheet {
         if (SCell.parentheses(form)) {
             form = SCell.removeParen(form); // remove unnecessary parentheses
         }
-        // If the formula is a number, parse it and return
-        if (SCell.isNumber(form)) { // if num is a number
-            ans = Double.parseDouble(form);
+        else{
+           cell.setType(-2);
+           return ans;
         }
-        else {
+            // If the formula is a number, parse it and return
+        if (SCell.isNumber(form)) { // if num is a number
+                ans = Double.parseDouble(form);
+        } else {
             if (SCell.isCell(form)) {// if num is a cell
 //                SCell c = new SCell(form);
-                if (cellList.contains(form)) {
+                    if (cellList.contains(form)) {
 //                    SCell c = get(0,0);
-                    cell.setType(-1);
-                    return 0;
-                    //Ex2Utils.ERR_CYCLE_FORM;
-                }
-                cellList.add(form);
-                String ref = this.get(form).getData();
-                ans = computeFormPart(cell, ref, cellList); //compute the content of the cell
-            } else {
+                        cell.setType(-1);
+                        return 0;
+                        //Ex2Utils.ERR_CYCLE_FORM;
+                    }
+                    cellList.add(form);
+                    String ref = this.get(form).getData();
+                    ans = computeFormPart(cell, ref, cellList); //compute the content of the cell
+                } else {
 
-                int opIndex = SCell.mainOpIndex(form);
-                double left = computeFormPart(cell, form.substring(0, opIndex), cellList);
-                double right = computeFormPart(cell, form.substring(opIndex + 1), cellList);
+                    int opIndex = SCell.mainOpIndex(form);
+                    double left = computeFormPart(cell, form.substring(0, opIndex), cellList);
+                    double right = computeFormPart(cell, form.substring(opIndex + 1), cellList);
 
-                char op = form.charAt(opIndex);  //   "+" : "-" : "/" : "*;
-                switch (op) {
-                    case '+':
-                        ans = left + right;
-                        break;
-                    case '-':
-                        ans = left - right;
-                        break;
-                    case '/':
-                        ans = left / right;
-                        break;
-                    case '*':
-                        ans = left * right;
-                        break;
+                    char op = form.charAt(opIndex);  //   "+" : "-" : "/" : "*;
+                    switch (op) {
+                        case '+':
+                            ans = left + right;
+                            break;
+                        case '-':
+                            ans = left - right;
+                            break;
+                        case '/':
+                            ans = left / right;
+                            break;
+                        case '*':
+                            ans = left * right;
+                            break;
+                    }
                 }
+
             }
 
-
-        }
         return ans;
     }
 
