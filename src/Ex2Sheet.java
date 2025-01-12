@@ -74,9 +74,9 @@ public class Ex2Sheet implements Sheet {
 
     @Override
     public void set(int x, int y, String s) {
-        if (isIn(x, y)){
-        SCell c = new SCell(s);
-        table[x][y] = c;
+        if (isIn(x, y)) {
+            SCell c = new SCell(s);
+            table[x][y] = c;
         }
     }
 
@@ -85,7 +85,7 @@ public class Ex2Sheet implements Sheet {
         int[][] dd = depth();
         int currentDepth = -1;
 
-        for (int d=0; d<10; d++) {
+        for (int d = 0; d < 10; d++) {
             for (int i = 0; i < width(); i++) {
                 for (int j = 0; j < height(); j++) {
                     if (dd[i][j] == currentDepth) {
@@ -117,33 +117,32 @@ public class Ex2Sheet implements Sheet {
         defultDepth(ans);
         int depth = 0;
         int count = 0;
-        int max = width()*height();
+        int max = width() * height();
         boolean computable = true;
 
         while (count < max && computable) {
             computable = false;
             for (int i = 0; i < width(); i++) {
                 for (int j = 0; j < height(); j++) {
-                    if(canBeComputedNow(i,j)) { // if
-                        ans [i][j] = depth;
-                        count ++;
+                    if (canBeComputedNow(i, j)) { // if
+                        ans[i][j] = depth;
+                        count++;
                         computable = true;
                     }
                 }
             } // end for
-            depth ++;
+            depth++;
         } //end while
         return ans;
     }
 
-    public boolean canBeComputedNow (int x, int y) {
+    public boolean canBeComputedNow(int x, int y) {
         boolean ans = false;
         SCell a = get(x, y);
 //        String x = a.setData();
         if (a.getType() == 3 && containsValCellName(a)) {
             ans = false;
         }
-
 
 
         return ans;
@@ -169,7 +168,7 @@ public class Ex2Sheet implements Sheet {
         SCell c = get(x, y);
         if (c != null) {
             switch (c.getType()) {
-                case -2 :
+                case -2:
                     ans = "ERR_FORM_FORMAT";
                     break;
                 case -1:
@@ -183,7 +182,7 @@ public class Ex2Sheet implements Sheet {
                     break;
                 case 3: // formula
                     ArrayList<String> cellList = new ArrayList<String>();
-                    cellList.add((char)(x+65)+String.valueOf(y));
+                    cellList.add((char) (x + 65) + String.valueOf(y));
                     ans = String.valueOf(computeForm(c, cellList));
             }
 //            ans = c.toString();
@@ -206,7 +205,7 @@ public class Ex2Sheet implements Sheet {
 //    }
 
 
-    public double computeForm (SCell cell, ArrayList<String> cellList) {
+    public double computeForm(SCell cell, ArrayList<String> cellList) {
 //        String str = getData();
 //        if (str.charAt(0)=='='){
 //            str = str.substring(1);
@@ -217,30 +216,33 @@ public class Ex2Sheet implements Sheet {
         return computeFormPart(cell, cell.getData(), cellList);
     }
 
-    public double computeFormPart (SCell cell, String form, ArrayList<String> cellList ) {
+    public double computeFormPart(SCell cell, String form, ArrayList<String> cellList) {
         double ans = 0;
 
-//        String form = cell.getData();
-
-//        if (form.charAt(0)=='='){
-            if (form.startsWith("=")){
+        // If the formula is empty, return 0 and set cell type to -2
+        if (form.isEmpty()){
+            cell.setType(-2);
+            return ans;
+        }
+        // Remove leading '=' and handle signs if the formula starts with one
+        if (form.startsWith("=")) {
             form = form.substring(1);
-            if (form.charAt(0)== '-' || form.charAt(0) =='+') {
+            if (form.charAt(0) == '-' || form.charAt(0) == '+') {
                 form = "0" + form;
             }
         }
 
-        if (SCell.parentheses(form)){
+        if (SCell.parentheses(form)) {
             form = SCell.removeParen(form); // remove unnecessary parentheses
         }
-
-        if (SCell.isNumber(form)){ // if num is a number
+        // If the formula is a number, parse it and return
+        if (SCell.isNumber(form)) { // if num is a number
             ans = Double.parseDouble(form);
         }
         else {
             if (SCell.isCell(form)) {// if num is a cell
 //                SCell c = new SCell(form);
-                if (cellList.contains(form)){
+                if (cellList.contains(form)) {
 //                    SCell c = get(0,0);
                     cell.setType(-1);
                     return 0;
@@ -249,14 +251,13 @@ public class Ex2Sheet implements Sheet {
                 cellList.add(form);
                 String ref = this.get(form).getData();
                 ans = computeFormPart(cell, ref, cellList); //compute the content of the cell
-            }
-            else{
+            } else {
 
                 int opIndex = SCell.mainOpIndex(form);
-                double left = computeFormPart(cell, form.substring(0 , opIndex), cellList);
-                double right = computeFormPart(cell, form.substring(opIndex+1), cellList);
+                double left = computeFormPart(cell, form.substring(0, opIndex), cellList);
+                double right = computeFormPart(cell, form.substring(opIndex + 1), cellList);
 
-                char op = form.charAt(opIndex) ;  //   "+" : "-" : "/" : "*;
+                char op = form.charAt(opIndex);  //   "+" : "-" : "/" : "*;
                 switch (op) {
                     case '+':
                         ans = left + right;
@@ -274,7 +275,6 @@ public class Ex2Sheet implements Sheet {
             }
 
 
-
         }
         return ans;
     }
@@ -282,6 +282,7 @@ public class Ex2Sheet implements Sheet {
 
     /**
      * this function receives a cell represented as a string (i.e A0) and returns its numeric value as a string (i.e 00)
+     *
      * @param s a cell represented as a string (i.e A0)
      * @return the cell numeric value as a string (i.e 00)
      */
@@ -308,14 +309,14 @@ public class Ex2Sheet implements Sheet {
 //        int[][] ans = new int[width()][height()];
         for (int i = 0; i < a.length; i++) {
             for (int j = 0; j < a[i].length; j++) {
-               a[i][j] = 0;     // TEMP: -1;
+                a[i][j] = 0;     // TEMP: -1;
             }
         }
     }
 
     public boolean containsValCellName(SCell c) {
         boolean found = false;
-        String checkForCell  = c.toString();
+        String checkForCell = c.toString();
         for (int i = 0; i < checkForCell.length(); i++) {
             for (int j = i + 2; j <= checkForCell.length(); j++) {
                 String substring = checkForCell.substring(i, j);
