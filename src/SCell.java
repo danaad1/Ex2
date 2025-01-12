@@ -120,7 +120,7 @@ public class SCell implements Cell {
             ans = false;
         } else {
             str = str.substring(1);
-            if (str.charAt(0)== '-' || str.charAt(0)=='+'){
+            if (str.startsWith("-") || str.startsWith("+")){
                 str = str.substring(1); // TODO: maybe should be to add 0 before
             }
             str = removeParen(str);

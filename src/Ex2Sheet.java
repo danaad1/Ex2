@@ -82,19 +82,23 @@ public class Ex2Sheet implements Sheet {
 
     @Override
     public void eval() {
-        int[][] dd = depth();
-        int currentDepth = -1;
-
-        for (int d = 0; d < 10; d++) {
-            for (int i = 0; i < width(); i++) {
-                for (int j = 0; j < height(); j++) {
-                    if (dd[i][j] == currentDepth) {
-                        value(i, j);
-                    }
-                }
+        for (int i = 0; i < width(); i++) {
+            for (int j = 0; j < height(); j++) {
+                eval(i, j);
             }
         }
-//eliyahu is king
+//        int[][] dd = depth();
+//        int currentDepth = -1;
+//
+//        for (int d = 0; d < 10; d++) {
+//            for (int i = 0; i < width(); i++) {
+//                for (int j = 0; j < height(); j++) {
+//                    if (dd[i][j] == currentDepth) {
+//                        value(i, j);
+//                    }
+//                }
+//            }
+//        }
 
         // Add your code here
 
@@ -111,40 +115,111 @@ public class Ex2Sheet implements Sheet {
         return ans;
     }
 
+    /**
+     * Calculates the depth of each cell in a 2D grid by recursively determining the number of steps required to resolve
+     * its formula, considering any referenced cells. If a cyclic reference is detected, it returns an error value
+     * (Ex2Utils.ERR_CYCLE_FORM).
+     * @return A 2D array representing the depth of each cell. If a cyclic reference is encountered,
+     *  *         the value will be `Ex2Utils.ERR_CYCLE_FORM`.
+     */
     @Override
     public int[][] depth() {
         int[][] ans = new int[width()][height()];
-        defultDepth(ans);
-        int depth = 0;
-        int count = 0;
-        int max = width() * height();
-        boolean computable = true;
+        // Iterate over all cells to compute their depth
+        for(int i = 0; i < width(); i++) {
+            for(int j = 0; j < height(); j++) {
+                ans[i][j] = cellDepth( i, j, new boolean[width()][height()]);
+            }
+        }
 
-        while (count < max && computable) {
-            computable = false;
-            for (int i = 0; i < width(); i++) {
-                for (int j = 0; j < height(); j++) {
-                    if (canBeComputedNow(i, j)) { // if
-                        ans[i][j] = depth;
-                        count++;
-                        computable = true;
+
+
+
+//        defultDepth(ans);
+//        int depth = 0;
+//        int count = 0;
+//        int max = width() * height();
+//        boolean computable = true;
+//
+//        while (count < max && computable) {
+//            computable = false;
+//            for (int i = 0; i < width(); i++) {
+//                for (int j = 0; j < height(); j++) {
+//                    if (canBeComputedNow(i, j)) { // if
+//                        ans[i][j] = depth;
+//                        count++;
+//                        computable = true;
+//                    }
+//                }
+//            } // end for
+//            depth++;
+//        } //end while
+        return ans;
+    }
+
+    /**
+     * Recursively computes the depth of a cell by resolving its formula and calculating the depth of referenced cells.
+     * If a cyclic reference is detected, the method returns an error value (Ex2Utils.ERR_CYCLE_FORM).
+     * @param x x-coordinate (column index) of the cell to be evaluated
+     * @param y The y-coordinate (row index) of the cell to be evaluated.
+     * @param visited A 2D boolean array to track cells that have  already  appeared in the recursive calculation to detect cycles
+     * @return
+     */
+    public int cellDepth (int x, int y, boolean [][] visited) {
+        int ans = 0;
+        // If the cell has already been visited, return a cyclic reference error
+        if (visited[x][y]) {
+            return Ex2Utils.ERR_CYCLE_FORM;
+        }
+        // Retrieve the cell at position (x, y)
+        SCell cell = get(x, y);
+        if (cell.getType() != 3 ){ // if is formula
+            return ans;
+        }
+        // Mark the current cell as visited to track the recursion stack
+        visited[x][y] = true;
+
+        String data = cell.getData();
+        // If the cell contains a formula, process it
+        if (data.startsWith("=")){
+            String form = data.trim().substring(1);
+
+            // Handle negative signs in the formula
+            if (form.startsWith("-")){
+                form = form.trim().substring(1);
+            }
+
+            if (form.matches("[A-Za-z]\\d+")){ // if form is in cel format
+                SCell ref = get(form); // get the reference and compute its depth recursively
+                if(ref != null){
+
+                    int columnX = form.toUpperCase().charAt(0) - 'A'; // Extract the X indices from the cell reference
+                    int rowY = Integer.parseInt(form.substring(1)); // Extract the y indices from the cell reference
+
+                    // Recursively calculate the depth of the referenced cell
+                    int depth = cellDepth(columnX, rowY, visited);
+
+                    // If a cycle is detected in the reference, return the error code
+                    if(depth == Ex2Utils.ERR_CYCLE_FORM){
+                        visited[x][y] = false;
+                        return Ex2Utils.ERR_CYCLE_FORM;
                     }
+                    // Otherwise, update the depth of the current cell
+                    ans = Math.max(ans, depth + 1);
                 }
-            } // end for
-            depth++;
-        } //end while
+            }
+        }
+        // Mark the current cell as not visited before returning from the recursion
+        visited[x][y] = false;
         return ans;
     }
 
     public boolean canBeComputedNow(int x, int y) {
         boolean ans = false;
         SCell a = get(x, y);
-//        String x = a.setData();
         if (a.getType() == 3 && containsValCellName(a)) {
             ans = false;
         }
-
-
         return ans;
     }
 
