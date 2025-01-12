@@ -28,7 +28,7 @@ public class CellEntry  implements Index2D {
     public boolean isValid() {
 
         // add index is null || is empty
-        String regex = "[A-Za-z]";
+        String regex = "[0-25]";
         String REGEX ="[0-99]";
         if (String.valueOf(_x).matches(regex) && String.valueOf(_y).matches(REGEX)){
             return true;
@@ -58,6 +58,17 @@ public class CellEntry  implements Index2D {
             return _y;
         }
         return Ex2Utils.ERR;
+    }
+    @Override
+    public String toString(){
+      String ans = "invalid index";
+        if (isValid()){
+            String a = String.valueOf((char) ('A' + getX()));
+            String l = String.valueOf(getY());
+            ans = a + l;
+        }
+
+        return ans;
     }
 }
  //to string //
