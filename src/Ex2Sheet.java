@@ -18,6 +18,7 @@ public class Ex2Sheet implements Sheet {
     }
 
     public Ex2Sheet() {
+
         this(Ex2Utils.WIDTH, Ex2Utils.HEIGHT);
     }
 
@@ -223,6 +224,9 @@ public class Ex2Sheet implements Sheet {
 
         if (form.charAt(0)=='='){
             form = form.substring(1);
+            if (form.charAt(0)== '-' || form.charAt(0) =='+') {
+                form = "0" + form;
+            }
         }
 
         if (SCell.parentheses(form)){

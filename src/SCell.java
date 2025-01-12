@@ -120,7 +120,11 @@ public class SCell implements Cell {
             ans = false;
         } else {
             str = str.substring(1);
+            if (str.charAt(0)== '-' || str.charAt(0)=='+'){
+                str = str.substring(1); // TODO: maybe should be to add 0 before
+            }
             str = removeParen(str);
+
             if (str.isEmpty() || !valForm(str)) { // if there's only = in num and the rest isn't a valid formula
                 ans = false;
                 setType(Ex2Utils.ERR_FORM_FORMAT);
