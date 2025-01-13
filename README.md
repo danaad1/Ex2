@@ -93,5 +93,6 @@ A formula that references itself directly or indirectly will result in a cycle. 
 - **ERR_FORM**: This error occurs if the cell contains invalid input such as non-numeric text in a cell expected to hold a number.
 - **ERR_CYCLE**: A cycle error occurs if a formula directly or indirectly references the cell it resides in, causing an infinite loop.
 - **ERR_WRONG_FORM**: This error is triggered when a formula is malformed or contains illegal characters.
+![image](https://github.com/user-attachments/assets/541861c7-3607-460f-a582-f91ed882674e)
 
 
