@@ -90,6 +90,9 @@ public class SCell implements Cell {
      */
     public static boolean isNumber(String num){
         boolean ans = true;
+        if (parentheses(num)){ // if the number is in parentheses
+           num = removeParen(num); // remove them
+        }
         try {
             Double.parseDouble(num); //try casting to double
         }

@@ -253,6 +253,12 @@ public class Ex2Sheet implements Sheet {
                     ans = c.getData();
                     break;
                 case 2: // number
+                    // handel case if the number is in parentheses
+                    String a = c.getData();
+                    if(SCell.parentheses(a)){
+                        a = SCell.removeParen(a);
+                        c.setData(a);
+                    }
                     ans = String.valueOf(Double.parseDouble(c.getData()));
                     break;
                 case 3: // formula

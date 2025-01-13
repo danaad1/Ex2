@@ -55,6 +55,7 @@ class SCellTest {
 
     @Test
     void isForm() {
+
         // TODO: create test.
     }
 
