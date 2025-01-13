@@ -302,7 +302,7 @@ public class Ex2Sheet implements Sheet {
         // Remove leading '=' and handle signs if the formula starts with one
         if (form.startsWith("=")) {
             form = form.substring(1);
-            if (form.charAt(0) == '-' || form.charAt(0) == '+') {
+            if (form.startsWith("-") || form.startsWith("+")) {
                 form = "0" + form;
             }
         }
@@ -327,6 +327,12 @@ public class Ex2Sheet implements Sheet {
                         //Ex2Utils.ERR_CYCLE_FORM;
                     }
                     cellList.add(form);
+                    SCell refCell = this.get(form);
+                    //if the reference cell contains an error
+                    if (refCell.getType() == -2){
+                        cell.setType(-2);
+                        return ans;
+                    }
                     String ref = this.get(form).getData();
                     ans = computeFormPart(cell, ref, cellList); //compute the content of the cell
                 } else {

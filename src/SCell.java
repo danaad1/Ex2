@@ -111,6 +111,7 @@ public class SCell implements Cell {
     public boolean isForm(/*String num*/) {
         boolean ans = true;
         String str = getData();
+
         if (str.isEmpty()){
             return false;
         }
