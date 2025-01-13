@@ -53,22 +53,22 @@ class CellTest {
 
     @Test
     void mainOpIndex() {
-        String a = "256"; // -1
-        assertTrue(Cell.mainOpIndex(a) == -1);
-        String b = "3+5"; //1
-        assertTrue(Cell.mainOpIndex(b) == 1);
-        String c = "(2+3)*(4+5)"; // 5
-        assertTrue(Cell.mainOpIndex(c) == 5);
-//        String d = "(((5)))"; // -1
-//        assertTrue(p1.Cell.mainOpIndex(d) == -1);
-//        String e = "3+(4*(5/2))"; // 1
-//        assertTrue(p1.Cell.mainOpIndex(e) == 1);
-//        String f = "(A5+(2*3))-2"; //10
-//        assertTrue(p1.Cell.mainOpIndex(f) == 10);
-//        String g = "((2+5)-3)+5+(4-2)"; //11
-//        assertTrue(p1.Cell.mainOpIndex(g) == 11);
-//        String h = "(2+(3-(4+(5-6))+6)+7)"; //-1
-//        assertTrue(p1.Cell.mainOpIndex(h) == -1);
+//        String a = "256"; // -1
+//        assertTrue(Cell.mainOpIndex(a) == -1);
+//        String b = "3+5"; //1
+//        assertTrue(Cell.mainOpIndex(b) == 1);
+//        String c = "(2+3)*(4+5)"; // 5
+//        assertTrue(Cell.mainOpIndex(c) == 5);
+        String d = "(((5)))"; // -1
+        assertTrue(p1.Cell.mainOpIndex(d) == -1);
+        String e = "3+(4*(5/2))"; // 1
+        assertTrue(p1.Cell.mainOpIndex(e) == 1);
+        String f = "(A5+(2*3))-2"; //10
+        assertTrue(p1.Cell.mainOpIndex(f) == 10);
+        String g = "((2+5)-3)+5+(4-2)"; //11
+        assertTrue(p1.Cell.mainOpIndex(g) == 11);
+        String h = "(2+(3-(4+(5-6))+6)+7)"; //-1
+        assertTrue(p1.Cell.mainOpIndex(h) == -1);
 //        String i = "";
 //        String j = "";
 //        String k = "";
