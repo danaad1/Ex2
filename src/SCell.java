@@ -181,38 +181,48 @@ public class SCell implements Cell {
         return false; // The formula is invalid
     }
 
+    /**
+     * Finds the index of the main operator in a formula, considering operator precedence (*, / > +, -) and parentheses
+     * to determine the last operator to be evaluated.
+     * @param num The formula string to analyze.
+     * @return The index of the main operator, or -1 if no operator is found.
+     */
     public static int mainOpIndex (String num){
         double counter = 0 ;
         int maimIndex = -1;
         double minCount = 0 ;
 
+        // Loop through each character in the formula string
         for (int i = 0; i < num.length(); i++){
+            // Handle multiplication or division
             if (num.charAt(i) == '*' || num.charAt(i) == '/'){
                 counter -= 0.25; // value of *\/
                 if (counter <= minCount){ // if value of arithmetic is the smallest - last to be calc'
                     maimIndex = i; // save index of minimal value arithmetic
                     minCount = counter;
-                    counter = 0 ; // TODO: לבדוק אם זה טוב
+                    counter = 0 ; // Reset counter for next operator
                 }
             }
+            // Handle addition or subtraction
             if (num.charAt(i) == '-' || num.charAt(i) == '+'){
                 counter -= 0.5; // value of +\-
                 if (counter <= minCount){ // if value of arithmetic is the smallest - last to be calc'
                     maimIndex = i; // save index of minimal value arithmetic
                     minCount = counter;
-                    counter = 0 ; // TODO: לבדוק אם זה טוב
+                    counter = 0 ;
 
                 }
             }
+            // Handle opening parentheses
             if (num.charAt(i) == '('){
                 counter ++;
             }
+            // Handle closing parentheses
             if (num.charAt(i) == ')'){
-//                counter --;
-                counter = 0;
+                counter = 0; // Reset counter when closing parenthesis is found
             }
         }
-        return maimIndex;
+        return maimIndex; // Return the index of the main operator
     }
 
     /**
@@ -240,19 +250,23 @@ public class SCell implements Cell {
     }
 
     /**
-     * this function
-     * @param num
-     * @return
+     * this function Removes matching parentheses from the start and end of a formula string if present, recursively
+     * checking the inner content.
+     * @param num The formula string that may contain parentheses to be removed.
+     * @return The formula string with matching parentheses removed from the beginning and end, if present.
      */
     public static String removeParen (String num){
         String ans = num;
         int count = -1;
+        // Check if the string starts with an opening parenthesis
         if (!num.isEmpty() && num.charAt(0) == '('){// if the first index is an open parentheses
             count = 1;
-            num = num.substring(1);
+            num = num.substring(1); // Remove the first opening parenthesis
             int index = 0; // the index of the closing parentheses
+            // Loop through the string to find the matching closing parenthesis
             for (int i = 0; i < num.length(); i++) { //check if the correlating parentheses for the first index is the last
                 String a = num.charAt(i) + "";
+                // Adjust the count based on the type of parenthesis encountered
                 switch (a) {
                     case "(":
                         count++;
@@ -261,12 +275,14 @@ public class SCell implements Cell {
                         count--;
                         break;
                 }
+                // When the count reaches 0, we've found the matching closing parenthesis
                 if (count == 0) {
                     index = i;
                     break;
                 }
             }
             int w = num.length();
+            // If the closing parenthesis is at the end of the string, remove both parentheses
             if (index == num.length() - 1) {
                 ans = removeParen(num.substring(0, index));
             }
