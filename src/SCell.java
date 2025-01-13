@@ -35,13 +35,13 @@ public class SCell implements Cell {
         /////////////////////
 
         if (isNumber(s)){
-            setType(Ex2Utils.NUMBER);
+            setType(Ex2Utils.NUMBER); // If the data is a number, set the type to NUMBER
         }
         if(isForm()){
-            setType(Ex2Utils.FORM);
+            setType(Ex2Utils.FORM); // If the data is a formula, set the type to FORM
         }
         if(isText()){
-            setType(Ex2Utils.TEXT);
+            setType(Ex2Utils.TEXT); // If the data is text, set the type to TEXT
         }
     }
     @Override
@@ -68,13 +68,20 @@ public class SCell implements Cell {
 
     }
 
+    /**
+     *Checks if the provided string a follows a valid cell format, consisting of a letter (A-Z or a-z) followed by a
+     * number (0-99). Returns true if the string matches this format, and false otherwise.
+     * @param a The string to check. It is expected to represent a cell reference in
+     *  *          the format of a letter followed by a number (e.g., "A1", "Z99").
+     * @return `true` if the string `a` is in a valid cell format, otherwise `false`.
+     */
     public static boolean isCell(String a) {
         boolean ans = true;
-        String regex = "^[A-Za-z][0-99]"; // צריך להיות הצמד לסוף
+        String regex = "^[A-Za-z][0-99]"; // Regex pattern for cell format: a letter followed by a number
         if (!a.matches(regex)) {
-            ans = false;
+            ans = false; // If the string does not match the format, set ans to false
         }
-        return ans;
+        return ans; // Return whether the string matches the cell format
     }
 
     /**
@@ -98,10 +105,11 @@ public class SCell implements Cell {
     public boolean isText(){
         boolean ans = true;
         String num = this.getData();
+        // Check if the data is empty, a formula (starts with '='), a number, or a formula
         if (num.isEmpty() || num.charAt(0) == '=' || isNumber(num) || isForm()) { //if num is either formula or just a number
-            ans = false;
+            ans = false; // If any of these conditions are true, it's not text
         }
-        return ans;
+        return ans; // Return whether the data is text
     }
 
     /**
@@ -111,24 +119,28 @@ public class SCell implements Cell {
     public boolean isForm(/*String num*/) {
         boolean ans = true;
         String str = getData();
-
+        // If the string is empty, it cannot be a valid formula
         if (str.isEmpty()){
             return false;
         }
-        // TODO: change functions yo not static
 
+        // Check if the first character is '=', indicating a formula
         if (str.charAt(0) != '=') { // if the first index isn't '=' - not formula
-            ans = false;
+            ans = false; // If the first character is not '=', it's not a formula
         } else {
-            str = str.substring(1);
+            str = str.substring(1); // Remove the '=' sign for further checking
+
+            // Allow optional signs (+ or -) at the start of the formula
             if (str.startsWith("-") || str.startsWith("+")){
-                str = str.substring(1); // TODO: maybe should be to add 0 before
+                str = str.substring(1);
             }
+            // Remove parentheses (if any) from the formula
             str = removeParen(str);
 
+            // If the formula is empty after removing parentheses or does not match a valid formula pattern, return false
             if (str.isEmpty() || !valForm(str)) { // if there's only = in num and the rest isn't a valid formula
-                ans = false;
-                setType(Ex2Utils.ERR_FORM_FORMAT);
+                ans = false; // Invalid formula format
+                setType(Ex2Utils.ERR_FORM_FORMAT); // Set error type for invalid formula format
             }
         }
 
@@ -136,97 +148,37 @@ public class SCell implements Cell {
 
     }
 
-//    public double computeForm (Ex2Sheet sheet) {
-////        String str = getData();
-////        if (str.charAt(0)=='='){
-////            str = str.substring(1);
-////        }
-////        return computeFormPart(str, sheet);
-//        ArrayList<String> cellList = new ArrayList<String>();
-//        cellList.add("j");
-//        return computeFormPart(getData(), sheet, cellList);
-//    }
-//
-//    public double computeFormPart (String form, Ex2Sheet sheet, ArrayList<String> cellList ) {
-//        double ans = 0;
-//
-//        if (form.charAt(0)=='='){
-//            form = form.substring(1);
-//        }
-//
-//        if (parentheses(form)){
-//            form = removeParen(form); // remove unnecessary parentheses
-//        }
-//
-//        if (isNumber(form)){ // if num is a number
-//            ans = Double.parseDouble(form);
-//        }
-//        else {
-//            if (isCell(form)) {// if num is a cell
-////                SCell c = new SCell(form);
-//                if (cellList.contains(form)){
-//                    return Ex2Utils.ERR_CYCLE_FORM;
-//                }
-//                cellList.add(form);
-//                String ref = sheet.get(form).getData();
-//                ans = computeFormPart(ref, sheet, cellList); //compute the content of the cell
-//            }
-//            else{
-//
-//                int opIndex = mainOpIndex(form);
-//                double left = computeFormPart(form.substring(0 , opIndex), sheet, cellList);
-//                double right = computeFormPart(form.substring(opIndex+1), sheet, cellList);
-//
-//                char op = form.charAt(opIndex) ;  //   "+" : "-" : "/" : "*;
-//                switch (op) {
-//                    case '+':
-//                        ans = left + right;
-//                        break;
-//                    case '-':
-//                        ans = left - right;
-//                        break;
-//                    case '/':
-//                        ans = left / right;
-//                        break;
-//                    case '*':
-//                        ans = left * right;
-//                        break;
-//                }
-//            }
-//
-//
-//
-//        }
-//        return ans;
-//    }
-
+    /**
+     * Validates if the given string num is a valid formula, which can be a number, cell reference, or a mathematical
+     * expression with operators, recursively checking both sides of any operators.
+     * @param num num The string to validate, which represents a formula.
+     * @return  `true` if the string `num` is a valid formula, and `false` otherwise.
+     */
     public static boolean valForm(String num){
-//        boolean ans = true;
+        // If the string contains parentheses, remove them
         if (parentheses(num)) {
             num = removeParen(num);
         }
+        // Check if the string is a valid number
         if (isNumber(num)){ // if num is a number
             return true;
         }
+
+        // Check if the string is a valid cell reference
         if (isCell(num)){ // if num is a cell
             return true;
         }
-//        if (parentheses(num)){
-//            num = removeParen(num); // remove unnecessary parentheses
-//            int opIndex = mainOpIndex(num);
-//            if ( valForm(num.substring(0 , opIndex)) && valForm(num.substring(opIndex+1))){ //both sides of op index are forms
-//                return true;
-//            }
-//        }
+
+        // Find the main operator in the formula
         int opIndex = mainOpIndex(num);
         if (opIndex == -1){
-            return false;
+            return false; // No operator found, so the formula is invalid
         }
+        // Recursively validate both sides of the operator
         if ( valForm(num.substring(0 , mainOpIndex(num))) && valForm(num.substring(mainOpIndex(num)+1))){ //both sides of op index are forms
-            return true;
+            return true; // Both sides of the operator are valid formulas
         }
-        return false;
-//        return ans;
+        return false; // The formula is invalid
     }
 
     public static int mainOpIndex (String num){
@@ -341,6 +293,69 @@ public class SCell implements Cell {
 //            return true;
 //        }
 //        return false;
+//    }
+    //    public double computeForm (Ex2Sheet sheet) {
+////        String str = getData();
+////        if (str.charAt(0)=='='){
+////            str = str.substring(1);
+////        }
+////        return computeFormPart(str, sheet);
+//        ArrayList<String> cellList = new ArrayList<String>();
+//        cellList.add("j");
+//        return computeFormPart(getData(), sheet, cellList);
+//    }
+//
+//    public double computeFormPart (String form, Ex2Sheet sheet, ArrayList<String> cellList ) {
+//        double ans = 0;
+//
+//        if (form.charAt(0)=='='){
+//            form = form.substring(1);
+//        }
+//
+//        if (parentheses(form)){
+//            form = removeParen(form); // remove unnecessary parentheses
+//        }
+//
+//        if (isNumber(form)){ // if num is a number
+//            ans = Double.parseDouble(form);
+//        }
+//        else {
+//            if (isCell(form)) {// if num is a cell
+////                SCell c = new SCell(form);
+//                if (cellList.contains(form)){
+//                    return Ex2Utils.ERR_CYCLE_FORM;
+//                }
+//                cellList.add(form);
+//                String ref = sheet.get(form).getData();
+//                ans = computeFormPart(ref, sheet, cellList); //compute the content of the cell
+//            }
+//            else{
+//
+//                int opIndex = mainOpIndex(form);
+//                double left = computeFormPart(form.substring(0 , opIndex), sheet, cellList);
+//                double right = computeFormPart(form.substring(opIndex+1), sheet, cellList);
+//
+//                char op = form.charAt(opIndex) ;  //   "+" : "-" : "/" : "*;
+//                switch (op) {
+//                    case '+':
+//                        ans = left + right;
+//                        break;
+//                    case '-':
+//                        ans = left - right;
+//                        break;
+//                    case '/':
+//                        ans = left / right;
+//                        break;
+//                    case '*':
+//                        ans = left * right;
+//                        break;
+//                }
+//            }
+//
+//
+//
+//        }
+//        return ans;
 //    }
 
 }
