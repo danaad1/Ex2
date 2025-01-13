@@ -64,24 +64,6 @@ The formula evaluation logic supports handling complex formulas, including neste
 ### **Cycle Detection**
 A formula that references itself directly or indirectly will result in a cycle. This is detected and flagged as an error.
 
-## Setup & Running
-
-### Requirements:
-- Java 11 or higher.
-- Integrated Development Environment (IDE) such as IntelliJ IDEA (or any other IDE that supports Java).
-
-### Running the Project:
-1. Clone the repository to your local machine:
-   ```bash
-   git clone https://github.com/yourusername/Ex2.git
-   ```
-
-2. Open the project in your preferred IDE (IntelliJ IDEA recommended).
-
-3. Build and run the main class that contains the GUI or the command-line interface for testing.
-
-4. To test the functionality, you can implement a simple Spreadsheet with some test cases for formulas and text.
-
 ### Running with GUI:
 - The project includes a basic GUI to visualize and interact with the spreadsheet. To use the GUI, run the main class `Ex2GUI`.
 
