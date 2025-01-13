@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 // Add your documentation below:
@@ -225,16 +228,72 @@ public class Ex2Sheet implements Sheet {
 
     @Override
     public void load(String fileName) throws IOException {
-        // Add your code here
 
-        /////////////////////
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+
+            // Skip the first line (header line)
+            reader.readLine();
+
+            // Process each subsequent line
+            while ((line = reader.readLine()) != null) {
+                // Split the line into parts using a comma delimiter
+                String[] parts = line.split(",");
+
+                // If the line doesn't contain exactly 3 parts, throw an exception
+                if (parts.length != 3) {
+                    throw new IllegalArgumentException("Invalid file format. Expected lines in the format 'x,y,value'.");
+                }
+
+                try {
+                    // Parse x and y coordinates
+                    int x = Integer.parseInt(parts[0].trim()); // x-coordinate
+                    int y = Integer.parseInt(parts[1].trim()); // y-coordinate
+                    String value = parts[2].trim(); // Data for the cell
+
+                    // Set the cell's value in the spreadsheet
+                    set(x, y, value);
+                }
+                catch (NumberFormatException e) {
+                    // Catch any errors in parsing the coordinates and throw a detailed exception
+                    throw new IllegalArgumentException("Invalid file format. Expected lines in the format 'x,y,value'.");
+                }
+            }
+        }
+        catch (IOException e) {
+            // Catch any errors encountered while reading the file and rethrow them with a message
+            throw new IOException("Error while reading the spreadsheet file: " + fileName, e);
+        }
     }
 
     @Override
     public void save(String fileName) throws IOException {
-        // Add your code here
+        // Create a FileWriter to write to the file
+        FileWriter writer = new FileWriter(fileName);
+        try{
+            writer.write("I2CS ArielU: SpreadSheet (Ex2) assignment - this line should be ignored in the load method\n");
 
-        /////////////////////
+            for (int row = 0; row < Ex2Utils.HEIGHT; row++){
+                for (int col = 0; col < Ex2Utils.WIDTH; col++){
+                    SCell cell = get(col, row);
+
+                    // Only save non-empty cells
+                    if(cell != null && !cell.getData().isEmpty()){
+                        String cellData = cell.getData();
+                        // Write the cell data in the specified format: <x>,<y>,<cell data>
+                        writer.write(String.format("%d,%d,%s\n", col, row, cellData));
+                    }
+                }
+            }
+
+        }
+        catch (IOException e){
+            throw new IOException("An error occurred while saving the spreadsheet to the file.", e);
+        }
+        finally{
+        // Close the FileWriter to release the file resources
+          writer.close();
+        }
     }
 
     @Override
@@ -273,18 +332,6 @@ public class Ex2Sheet implements Sheet {
         /////////////////////
         return ans;
     }
-//    public boolean containsCellLoop(SCell cell) {
-//        boolean ans = false;
-////        String content = cell.getData();
-//        ArrayList<String> cellList = new ArrayList<String>();
-//        cellList.add(String.valueOf(cell));
-//        if (containsValCellName(cell)){
-//
-//
-//        }
-//       return ans;
-//    }
-
 
     public double computeForm(SCell cell, ArrayList<String> cellList) {
 //        String str = getData();
@@ -420,28 +467,6 @@ public class Ex2Sheet implements Sheet {
         }
         return found;
     } //containsValCellName
-
-//    public String findCell (String str){
-//
-//
-//    }
-//
-//    public boolean cellLoop (SCell cell){ //to be called only if cell contains formula
-//        ArrayList<String> cellList = new ArrayList<String>();
-//        String thisCell = cellVal(String.valueOf(cell));
-//        cellList.add(thisCell);
-//
-//       String a = cell.getData().substring(1); // -"="
-//        if (SCell.mainOpIndex(a)==-1){
-//            if (cellList.contains(a)){
-//                return true;
-//            }
-//
-//        }
-//        else{
-//
-//        }
-//    }
 
 
 }
