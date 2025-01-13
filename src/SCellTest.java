@@ -55,13 +55,24 @@ class SCellTest {
 
     @Test
     void isForm() {
+        SCell a4 = new SCell("=123+456");
+        SCell b3 = new SCell("35");
+        SCell c = new SCell("a4+b3");
+        assertTrue(a4.isForm());
+        assertFalse(b3.isForm());
+        assertFalse(c.isForm());
+        a4.setData("=(1)");
+        assertTrue(a4.isForm());
 
-        // TODO: create test.
-    }
+        a4.setData("biso");
+        assertFalse(a4.isForm());
+        a4.setData("=(3+5");
+        assertFalse(a4.isForm());
+        a4.setData("(1+5)");
+        assertFalse(a4.isForm());
+        a4.setData("()");
+        assertFalse(a4.isForm());
 
-    @Test
-    void computeForm() {
-        // TODO: create test.
     }
 
     @Test
