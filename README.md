@@ -99,24 +99,4 @@ A formula that references itself directly or indirectly will result in a cycle. 
 - **ERR_CYCLE**: A cycle error occurs if a formula directly or indirectly references the cell it resides in, causing an infinite loop.
 - **ERR_WRONG_FORM**: This error is triggered when a formula is malformed or contains illegal characters.
 
-## Testing & Validation
 
-The project uses **JUnit** for unit testing. The core components of the system, such as formula evaluation, cycle detection, and string parsing, are thoroughly tested. Make sure to run all tests before finalizing the implementation.
-
-To run the tests:
-1. Use the **JUnit** test runner in your IDE.
-2. Ensure all tests pass successfully before submitting.
-
-## Notes
-
-- **GitHub Repository:** The repository for this project is available on GitHub at [Ex2 Repository](https://github.com/yourusername/Ex2).
-- **Assignment Submission:** Submit your solution by including a link to your GitHub repository and a simple text file containing your student ID.
-- **Honesty Policy:** Ensure that the work submitted is your own. While discussing the assignment with peers is encouraged, do not share code or solutions.
-
-## License
-
-This project is licensed under the MIT License.
-
----
-
-Feel free to adjust any specifics, such as your GitHub username or project-related details, in the above README template.
