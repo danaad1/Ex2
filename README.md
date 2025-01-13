@@ -1,8 +1,3 @@
-# Ex2
-Sure! Below is an example of a `README.md` file for your project:
-
----
-
 # Ex2 - Foundation of Object-Oriented and Recursion
 
 ## Introduction
